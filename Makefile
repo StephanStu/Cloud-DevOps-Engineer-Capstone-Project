@@ -1,7 +1,11 @@
 ## The Makefile includes instructions on environment setup and lint tests
 setup-brew:
 	# install brew
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+	./install_brew.sh
+
+setup-docker:
+	# install docker on ubuntu-linux
+	./install_docker.sh
 
 setup-Jenkins:
 	# install Jenkins
