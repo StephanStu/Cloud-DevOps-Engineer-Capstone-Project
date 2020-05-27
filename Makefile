@@ -37,5 +37,7 @@ lint:
 	hadolint Dockerfile
 	# Run linter for html-files
 	tidy index.html
+	# Return an OK
+	echo "Files are OK."
 
-all: install lint test
+all: test lint
