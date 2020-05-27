@@ -7,6 +7,8 @@ setup-Jenkins:
 	# install Jenkins
 
 install:
+	# Install dependencies of Brew
+	brew install gcc
 	# Install hadolint, see local hadolint install instructions:   https://github.com/hadolint/hadolint
 	brew install hadolint
 	# Install tidy, the html-linter

@@ -14,6 +14,7 @@ In this project the skills & knowledge which were developed throughout the Cloud
 ## Pipeline Setup
 This section describes how to set up the continuous integration / continuous deployment pipeline that this repository contains.
 ### Spawn an EC2-Instance
+### Spawn an EKC-Instance
 ### Install Jenkins
 ### Install Brew
 ### Install hadolint
@@ -22,6 +23,7 @@ This section describes how to set up the continuous integration / continuous dep
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
 ### Lint the Dockerfile
 The Dockerfile gives docker instructions how to build the image and what to do with it, e.g. run the image with port-forwarding. The Dockerfile is checked both syntactically and with respect to non-functional guidelines (e.g. _Dockerfile:2 DL3006 Always tag the version of an image explicitly_), such that one can be sure, the image builds correctly before kicking off the build. The tool used to perform these checks is hadolint, to run the checks
+
 `$ hadolint Dockerfile`
 
 ### Build the Docker-Image: _run docker.sh_
