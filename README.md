@@ -20,7 +20,7 @@ Note: When the stack is deleted, all it's entities are removed as well.
 #### Spawn a Repository in ECR
 As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
 The repository name is defined in _parameters.json_, by the variable `RepositoryName`.
-Note: Inside _infrastructure.yml_, a user has been hardcoded wiht rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`.
+Note: Inside _infrastructure.yml_, a user has been hardcoded with rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`. If you pull this GitHub-Repository and spawn the infrastructure, be sure to add and / or replace your users here.
 ### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
 ### Install Brew - A package management system
 ### Install hadolint - A linter for Docker-files
