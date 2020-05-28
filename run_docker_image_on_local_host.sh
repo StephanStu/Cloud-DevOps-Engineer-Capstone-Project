@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Step 1:
-# Build image and add a descriptive tag
-docker build -t udacity_capstone_project_repository .
+# Uncomment, if you did not run buidl_docker_imags.sh; build image and add a descriptive tag
+# docker build -t udacity_capstone_project_repository .
 
 # Step 2:
 # List docker images
