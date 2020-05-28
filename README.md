@@ -13,11 +13,18 @@ In this project the skills & knowledge which were developed throughout the Cloud
 
 ## Pipeline Setup
 This section describes how to set up the continuous integration / continuous deployment pipeline that this repository contains.
-### Spawn an EC2-Instance
-### Spawn an EKC-Instance
-### Install Jenkins
-### Install Brew
-### Install hadolint
+### Spawn the Infrastructure using CloudFormation
+The stack in Amazon Web Servic is created by
+`$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
+Note: When the stack is deleted, all it's entities are removed as well.
+#### Spawn a Repository in ECR
+As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
+The repository name is defined in _parameters.json_, by the variable `RepositoryName`.
+Note: Inside _infrastructure.yml_, a user has been hardcoded wiht rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`.
+### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
+### Install Brew - A package management system
+### Install hadolint - A linter for Docker-files
+### Install tidy - A linter for html-Files
 
 ## Pipeline Components
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
