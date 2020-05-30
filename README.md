@@ -17,7 +17,7 @@ This section describes how to set up the continuous integration / continuous dep
 The stack in Amazon Web Service is created by
 `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
 Note: When the stack is deleted, all it's entities are removed as well.
-#### Spawn a Repository in ECR
+#### Spawn a Repository in Elastic Container Registry
 As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
 The repository name is defined in _parameters.json_, by the variable `RepositoryName`.
 Note: Inside _infrastructure.yml_, a user has been hardcoded with rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`. If you pull this GitHub-Repository and spawn the infrastructure, be sure to add and / or replace your users here.
