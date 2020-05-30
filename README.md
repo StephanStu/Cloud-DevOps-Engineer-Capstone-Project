@@ -46,7 +46,7 @@ After the infrastructure has been spawned, the next step is to _ssh into_ the we
 `$ sudo apt install make`
 
 in order to install _make_. This allows to execute the _Makefile_.
-The _Makefile_ can be found in the rrot of this repository; the repository must be checked out on the machine by
+The _Makefile_ can be found in the root of this repository; the repository must be checked out on the machine by
 
 `$ git clone https://github.com/StephanStu/Cloud-DevOps-Engineer-Capstone-Project.git`
 
@@ -82,15 +82,24 @@ and
 
 **Note:** This step requires the attention of the administrator, i.e. user input during execution is requested.
 
-
-
 #### Install GCC, hadolint & tidy
-It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipleine requires to check Docker-Files and .html-files prior to their deyployment. Consequently, linters for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
+It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipleine requires to check Docker-Files and .html-files prior to their deyployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, _linters_ for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
 
 `$ make install`
 
-Checking the files for semantic errors and non-functional requirements is also called _linting_. Two linters are deployed on the machine: The linter for Docker-files is _hadolint_ & The linter for html-files is _tidy_.
-#### Install tidy - A linter for html-Files
+Two linters are deployed on the machine: The linter for Docker-files is _hadolint_ & The linter for html-files is _tidy_.
+**Note:** This step requires the attention of the administrator, i.e. user input during execution may be requested because packages might be out-of-date. Successfull execution of this procedure exits with `Toolchain is installed.`.
+**Note:** It is recommended to run `make test` to check if installation has been successfull. If this command does not exit with `Toolchain is ready.`, errors must be fixed before the next step.
+
+#### Manual Creation & Linting of the Docker-Image
+To create the Docker-Image, enable execution of _build_docker_image.sh_,
+
+`$ chmod u+x build_docker_image.sh`
+
+and
+
+`$ ./build_docker_image.sh`
+
 #### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
 
 ## Pipeline Components
