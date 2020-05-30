@@ -46,6 +46,11 @@ After the infrastructure has been spawned, the next step is to _ssh into_ the we
 `$ sudo apt install make`
 
 in order to install _make_. This allows to execute the _Makefile_.
+The _Makefile_ can be found in the rrot of this repository; the repository must be checked out on the machine by
+
+`$ git clone https://github.com/StephanStu/Cloud-DevOps-Engineer-Capstone-Project.git`
+
+Then, cd into the created folder to and `$ ls` will display the _Makefile_.
 
 #### Install Brew - A package management system
 Brew is package management system that is needed to deploy necessary tools on the machine. To install brew, enable execution of _install_brew.sh_,
