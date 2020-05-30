@@ -102,7 +102,7 @@ The image can be run by
 
 `$ ./run_docker_image_on_local_host.sh`
 
-Then, the web server is running as a containerized application and publishes the static website on port 8080 of the host.
+Then, the web server is running as a containerized application and publishes the static website on port 8000 of the host.
 
 ![local_container_run](doc/local_container_run.png)
 

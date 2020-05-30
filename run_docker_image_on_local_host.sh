@@ -9,4 +9,4 @@ docker image ls
 
 # Step 3:
 # Run containerized application
-docker run -p 8080:80 udacity_capstone_project_repository
+docker run -p 8000:80 udacity_capstone_project_repository

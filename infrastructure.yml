@@ -36,8 +36,8 @@ Resources:
       GroupDescription: Allow connections from specified CIDR ranges, i.e. my Mac to e.g. configure Jenkins
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
+        FromPort: 8000
+        ToPort: 8000
         CidrIp: !Ref UdacityCapstoneDeveloperIP
       - IpProtocol: tcp
         FromPort: 22
