@@ -57,16 +57,11 @@ Amazon Web Service's Command Line Interface is needed to access the infrastructu
 
 `$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"``
 
-Then, `$ unzip awscliv2.zip` and `$ sudo ./aws/install`. The installation can be tested with
-
-`$ aws --version`
-
-Next, download and extract the latest release of _eksctl_, the command line tool that allows control of the Kubernetes cluster,  with the following command:
+Then, `$ unzip awscliv2.zip` and `$ sudo ./aws/install`. The installation can be tested with `$ aws --version`. Next, download and extract the latest release of _eksctl_, the command line tool that allows control of the Kubernetes cluster,  with the following command:
 
 `$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp`
 
-Move the extracted binary, `$ sudo mv /tmp/eksctl /usr/local/bin` and test that installation was successful by `$ eksctl version`.
-
+Move the extracted binary, `$ sudo mv /tmp/eksctl /usr/local/bin` and test that installation was successful by `$ eksctl version`. These guidelines have been taken from [this source](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html).
 **Note**: The GitTag version should be at least 0.20.0.
 
 #### Install Brew - A package management system
@@ -124,6 +119,21 @@ Then, the web server is running as a containerized application and publishes the
 ![local_container_run](doc/local_container_run.png)
 
 **Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
+
+#### Configure Credentials of Amazon Web Service's Command Line Interface on the Sweb Server and Upload the Image to the Container Repository
+One goal of the pipeline is to keep track of healthy container images. Therefor, linted & tested images are kept in a container repository provided by Amazon Web Services, the Elastic Container Registry, that has been spawned as part of the infrastructure.
+To enable this, configure the credentials of the command line interface on the server locally with approproiate user credentials (access to ECR is needed) by,
+
+`$ aws configure`
+
+Enter access key and secret access key of a user with appropriate credentials (administrator rights always work, but this is in conflict with the _least privilege policy_ taught in the class).
+To upload container images to the container repository created as part of the stack in _infrastructure.yml_, run `$ chmod u+x upload_docker_to_ecr.sh` followd by
+
+`$ ./upload_docker_to_ecr.sh`
+
+The previously created docker image is now pushed into the container repository provided by Amazon Web Service (an alternative container repository is DockerHub, see the Knowledge section).
+
+![push_containers_to_ecr](doc/push_containers_to_ecr.png)
 
 #### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
 To install Jenkins, the Docker-Image must be stopped first, such that the port 8000 is vacant.
