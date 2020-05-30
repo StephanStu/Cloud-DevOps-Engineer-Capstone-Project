@@ -52,6 +52,23 @@ The _Makefile_ can be found in the root of this repository; the repository must 
 
 Then, cd into the created folder to and `$ ls` will display the _Makefile_.
 
+#### Install Amazon Web Service's Command Line Interface & Kubernetes Cluster Control
+Amazon Web Service's Command Line Interface is needed to access the infrastructure from the web server in an automatic fashion, e.g. to upload container images to the container repository provided by Amazon Web Service. To install Amazon Web Service's Command Line Interface,
+
+`$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"``
+
+Then, `$ unzip awscliv2.zip` and `$ sudo ./aws/install`. The installation can be tested with
+
+`$ aws --version`
+
+Next, download and extract the latest release of _eksctl_, the command line tool that allows control of the Kubernetes cluster,  with the following command:
+
+`$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp`
+
+Move the extracted binary, `$ sudo mv /tmp/eksctl /usr/local/bin` and test that installation was successful by `$ eksctl version`.
+
+**Note**: The GitTag version should be at least 0.20.0.
+
 #### Install Brew - A package management system
 Brew is package management system that is needed to deploy necessary tools on the machine. To install brew, enable execution of _install_brew.sh_,
 
@@ -120,17 +137,11 @@ The Dockerfile gives docker instructions how to build the image and what to do w
 
 
 
-### Upload the Docker-Image to DockerHub: _upload docker.sh_
-This file must be given permission to run (run `$ chmod u+x upload_docker.sh` first). The docker image is uploaded to DockerHub by
 
-`$ ./run_docker.sh`
-
-After the image has been uploaded, it is visible in my DockerHub-Account as a new (or refreshed) repository.
-
-![repository_in_dockerhub](doc/repository_in_dockerhub.png)
 
 ## Knowledge
 This section wraps up useful knowledge that is needed in the context of cloud-native development operations.
+
 ### Docker-Commands
 Docker-Containers can be considered as single-purpose virtual machines that can be deployed on a host to provide a single service; many base-images can be found on the DockerHub that can be re-used to produce high-quality of service products. This sub-section wraps up some Docker-Commands that are frequently needed:
 
@@ -144,3 +155,12 @@ Docker-Containers can be considered as single-purpose virtual machines that can 
 Creating a virtual environment makes it easier to provide necessary packages for an application in a location on the host that is _under full management of the user_.
 
 * To create a virtual environment: `$ python3 -m venv [name-of-environment]`
+
+### DockerHub: An Alternative Container Repository: _upload docker to dockerhub.sh_
+This file must be given permission to run (run `$ chmod u+x upload_docker_to_dockerhub.sh` first). The docker image is uploaded to DockerHub by
+
+`$ ./upload_docker_to_dockerhub.sh`
+
+After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
+
+![repository_in_dockerhub](doc/repository_in_dockerhub.png)
