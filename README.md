@@ -94,7 +94,7 @@ Two linters are deployed on the machine: The linter for Docker-files is _hadolin
 #### Run the Docker-Image on the Host: _run docker_image_on_local_host.sh_
 This file must be given permission to run (run `$ chmod u+x run_docker_image_on_local_host.sh` first). The docker image is build by
 
-`$ ./build_docker_image.sh`
+`$ chmod u+x build_docker_image.sh` (to allow execution) followed by `$ ./build_docker_image.sh`
 
 After the image has been build, all images available on the host are listed.
 Note, that the recently created image appears in the list.
@@ -102,13 +102,14 @@ The image can be run by
 
 `$ ./run_docker_image_on_local_host.sh`
 
-Then, the web server is running as a containerized application and publishes the static website on port 8000 of the host.
+Then, the web server is running as a containerized application and publishes the static website on port 8000 of the host as displayed in the merged screenshots below.
 
 ![local_container_run](doc/local_container_run.png)
 
 **Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
 
-#### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
+#### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
+To install Jenkins, the Docker-Image must be stopped first, such that the port 8000 is vacant.
 
 ## Pipeline Components
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
