@@ -16,11 +16,15 @@ This section describes how to set up the continuous integration / continuous dep
 ### Spawn the Infrastructure using CloudFormation
 The stack in Amazon Web Service is created by
 `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
-Note: When the stack is deleted, all it's entities are removed as well.
+After running the CloudFormation script with parameters, the stack appears with all ressources and outputs as displayed in the figure below.
+![spawn_infrastructure.png](doc/spawn_infrastructure.png)
+**Note**: When the stack is deleted, all it's entities are removed as well. If the stack is created manually, one has to keep track of destruction of all resources after the infrastructure is not longer needed.
+
 #### Spawn a Repository in Elastic Container Registry
 As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
 The repository name is defined in _parameters.json_, by the variable `RepositoryName`.
 Note: Inside _infrastructure.yml_, a user has been hardcoded with rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`. If you pull this GitHub-Repository and spawn the infrastructure, be sure to add and / or replace your users here.
+
 #### Spawn a Security Group
 A firewall solution that performs one primary function is needed: Filter incoming and outgoing traffic from an EC2 instance. In Amazon Web Service this solution is called a _Security Group_. It accomplishes this filtering function at the TCP and IP layers, via their respective ports, and source/destination IP addresses. The spawned filter allows
 
@@ -29,6 +33,11 @@ A firewall solution that performs one primary function is needed: Filter incomin
 * inbound traffic via TCP on port 80 from one IP-Address - the IP-Address of the administrator / Cloud DevOps Engineer, who must configure Jenkins (to be provided in _parameters.json_ as , `UdacityCapstoneDeveloperIP`)
 
 #### Spawn a Web Server for Continuous Integration & Deployment
+A web server is needed to host Jenkins and run tools that implement the continuous integration- & deployment-pipeline. The web server is an instance of Amazon Web Service's EC2-Solutions with
+
+* machine image: Ubuntu Bionic-18.04-amd64 (ami-0e342d72b12109f91)
+* type: t2.micro
+
 
 ### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
 ### Install Brew - A package management system
