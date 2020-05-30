@@ -100,10 +100,12 @@ It is recommended by _Brew_, that GCC is installed on the server. Moreover, the 
 `$ make install`
 
 Two linters are deployed on the machine: The linter for Docker-files is _hadolint_ & The linter for html-files is _tidy_.
+
 **Note:** This step requires the attention of the administrator, i.e. user input during execution may be requested because packages might be out-of-date. Successfull execution of this procedure exits with `Toolchain is installed.`.
+
 **Note:** It is recommended to run `make test` to check if installation has been successfull. If this command does not exit with `Toolchain is ready.`, errors must be fixed before the next step.
 
-#### Run the Docker-Image on the Host: _run docker_image_on_local_host.sh_
+#### Run the Docker-Image
 This file must be given permission to run (run `$ chmod u+x run_docker_image_on_local_host.sh` first). The docker image is build by
 
 `$ chmod u+x build_docker_image.sh` (to allow execution) followed by `$ ./build_docker_image.sh`
@@ -120,7 +122,7 @@ Then, the web server is running as a containerized application and publishes the
 
 **Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
 
-#### Configure Credentials of Amazon Web Service's Command Line Interface on the Sweb Server and Upload the Image to the Container Repository
+#### Configure Credentials of Amazon Web Service's Command Line Interface & Upload the Image to the Container Repository
 One goal of the pipeline is to keep track of healthy container images. Therefor, linted & tested images are kept in a container repository provided by Amazon Web Services, the Elastic Container Registry, that has been spawned as part of the infrastructure.
 To enable this, configure the credentials of the command line interface on the server locally with approproiate user credentials (access to ECR is needed) by,
 
