@@ -26,7 +26,7 @@ To create the Kubernetes Cluster in Amazon Web Service, an additional command li
 
 A successful creation of the cluster and the nodes will be visible in CloudFormation as displayed in the figure below.
 
-![spawn_eks_cluster.png](doc/spawn_eks_cluster.png)
+![spawn_eks_cluster](doc/spawn_eks_cluster.png)
 
 **Note**: When the stack is deleted, all it's entities are removed as well. If the entities are created manually, one has to keep track of destruction of all entities after the infrastructure is not longer needed.
 
@@ -49,8 +49,13 @@ A web server is needed to host Jenkins and run tools that implement the continuo
 * type: t2.micro
 
 #### Spawn a Kubernetes Cluster
+As illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)), a cluster is a set of nodes. These contain the containerized applications, as displayed in the figure below.
 
+![cluster](doc/cluster.svg)
+
+A cluster is a set of nodes, that may be deployed on a number of Amazon EC2 instances.
 #### Spawn a Kubernetes Nodegroup
+Worker machines in Kubernetes are called nodes. Nodes contain pods and pods contain the containerized applications - docker images. Amazon's implementation of Kubernetes lets worker nodes run in an account and connect to a cluster's control plane via the cluster API server endpoint. One or more worker nodes are deployed into a node group. A node group is one or more Amazon EC2 instances that are deployed in an Amazon EC2 Auto Scaling group.
 
 ### Setup the Web Server for Continuous Integration & Deployment
 After the infrastructure has been spawned, the next step is to _ssh into_ the web server and install the tools that execute the continuous integration & deployment on the machine. First,
