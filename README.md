@@ -14,13 +14,22 @@ In this project the skills & knowledge which were developed throughout the Cloud
 ## Pipeline Setup
 This section describes how to set up the continuous integration / continuous deployment pipeline that this repository contains.
 ### Spawn the Infrastructure using CloudFormation
-The stack in Amazon Web Servic is created by
+The stack in Amazon Web Service is created by
 `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
 Note: When the stack is deleted, all it's entities are removed as well.
 #### Spawn a Repository in ECR
 As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
 The repository name is defined in _parameters.json_, by the variable `RepositoryName`.
 Note: Inside _infrastructure.yml_, a user has been hardcoded with rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`. If you pull this GitHub-Repository and spawn the infrastructure, be sure to add and / or replace your users here.
+#### Spawn a Security Group
+A firewall solution that performs one primary function is needed: Filter incoming and outgoing traffic from an EC2 instance. In Amazon Web Service this solution is called a _Security Group_. It accomplishes this filtering function at the TCP and IP layers, via their respective ports, and source/destination IP addresses. The spawned filter allows
+
+* outbound traffic to everyone.
+* inboud traffic via SSH from one IP-Address - the IP-Address of the administrator / Cloud DevOps Engineer, who must ssh into the server (to be provided in _parameters.json_ as , `UdacityCapstoneDeveloperIP`)
+* inbound traffic via TCP on port 80 from one IP-Address - the IP-Address of the administrator / Cloud DevOps Engineer, who must configure Jenkins (to be provided in _parameters.json_ as , `UdacityCapstoneDeveloperIP`)
+
+#### Spawn a Web Server for Continuous Integration & Deployment
+
 ### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
 ### Install Brew - A package management system
 ### Install hadolint - A linter for Docker-files
