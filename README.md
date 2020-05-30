@@ -40,11 +40,53 @@ A web server is needed to host Jenkins and run tools that implement the continuo
 * machine image: Ubuntu Bionic-18.04-amd64 (ami-0e342d72b12109f91)
 * type: t2.micro
 
+### Setup the Web Server for Continuous Integration & Deployment
+After the infrastructure has been spawned, the next step is to _ssh into_ the web server and install the tools that execute the continuous integration & deployment on the machine. First,
 
-### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
-### Install Brew - A package management system
-### Install hadolint - A linter for Docker-files
-### Install tidy - A linter for html-Files
+`$ sudo apt install make`
+
+in order to install _make_. This allows to execute the _Makefile_.
+
+#### Install Brew - A package management system
+Brew is package management system that is needed to deploy necessary tools on the machine. To install brew, enable execution of _install_brew.sh_,
+
+`$ chmod u+x install_brew.sh`
+
+and
+
+`$ make setup-brew`
+
+After the installation is finished, configure Homebrew in your /home/ubuntu/.profile by running
+
+`$ echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> /home/ubuntu/.profile`
+
+and add Homebrew to your PATH,
+
+`$ eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)`
+
+**Note:** This step requires the attention of the administrator, i.e. user input during execution is requested.
+
+#### Install Docker
+To install Docker, enable execution of _install_docker.sh_,
+
+`$ chmod u+x install_docker.sh`
+
+and
+
+`$ make setup-docker`
+
+**Note:** This step requires the attention of the administrator, i.e. user input during execution is requested.
+
+
+
+#### Install GCC, hadolint & tidy
+It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipleine requires to check Docker-Files and .html-files prior to their deyployment. Consequently, linters for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
+
+`$ make install`
+
+Checking the files for semantic errors and non-functional requirements is also called _linting_. Two linters are deployed on the machine: The linter for Docker-files is _hadolint_ & The linter for html-files is _tidy_.
+#### Install tidy - A linter for html-Files
+#### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
 
 ## Pipeline Components
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
