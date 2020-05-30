@@ -91,14 +91,22 @@ Two linters are deployed on the machine: The linter for Docker-files is _hadolin
 **Note:** This step requires the attention of the administrator, i.e. user input during execution may be requested because packages might be out-of-date. Successfull execution of this procedure exits with `Toolchain is installed.`.
 **Note:** It is recommended to run `make test` to check if installation has been successfull. If this command does not exit with `Toolchain is ready.`, errors must be fixed before the next step.
 
-#### Manual Creation & Linting of the Docker-Image
-To create the Docker-Image, enable execution of _build_docker_image.sh_,
-
-`$ chmod u+x build_docker_image.sh`
-
-and
+#### Run the Docker-Image on the Host: _run docker_image_on_local_host.sh_
+This file must be given permission to run (run `$ chmod u+x run_docker_image_on_local_host.sh` first). The docker image is build by
 
 `$ ./build_docker_image.sh`
+
+After the image has been build, all images available on the host are listed.
+Note, that the recently created image appears in the list.
+The image can be run by
+
+`$ ./run_docker_image_on_local_host.sh`
+
+Then, the web server is running as a containerized application and publishes the static website on port 8080 of the host.
+
+![local_container_run](doc/local_container_run.png)
+
+**Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
 
 #### Install Jenkins - The Continuous Integration / Continuous Deployment Tool
 
@@ -109,20 +117,7 @@ The Dockerfile gives docker instructions how to build the image and what to do w
 
 `$ hadolint Dockerfile`
 
-### Build the Docker-Image: _run docker.sh_
-This file must be given permission to run (run `$ chmod u+x run_docker.sh` first). The docker image is build by
 
-`$ ./run_docker.sh`
-
-After the image has been build, all images available on the host are listed.
-Note, that the image `my_static_website_host` appears in the list.
-The image can be run by
-
-`$ docker run -p 8000:80 my_static_website_host`
-
-Then, the web server is running as a containerized application and publishes the static website on port 8000 of the host.
-
-![local_container_run](doc/local_container_run.png)
 
 ### Upload the Docker-Image to DockerHub: _upload docker.sh_
 This file must be given permission to run (run `$ chmod u+x upload_docker.sh` first). The docker image is uploaded to DockerHub by
