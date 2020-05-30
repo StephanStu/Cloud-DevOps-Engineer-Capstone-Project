@@ -17,8 +17,10 @@ This section describes how to set up the continuous integration / continuous dep
 The stack in Amazon Web Service is created by
 `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
 After running the CloudFormation script with parameters, the stack appears with all ressources and outputs as displayed in the figure below.
+
 ![spawn_infrastructure.png](doc/spawn_infrastructure.png)
-**Note**: When the stack is deleted, all it's entities are removed as well. If the stack is created manually, one has to keep track of destruction of all resources after the infrastructure is not longer needed.
+
+**Note**: When the stack is deleted, all it's entities are removed as well. If the entities are created manually, one has to keep track of destruction of all entities after the infrastructure is not longer needed.
 
 #### Spawn a Repository in Elastic Container Registry
 As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
