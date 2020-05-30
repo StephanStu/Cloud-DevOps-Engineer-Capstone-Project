@@ -16,9 +16,17 @@ This section describes how to set up the continuous integration / continuous dep
 ### Spawn the Infrastructure using CloudFormation
 The stack in Amazon Web Service is created by
 `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
-After running the CloudFormation script with parameters, the stack appears with all ressources and outputs as displayed in the figure below.
+After running the CloudFormation script with parameters, the stack appears with all resources and outputs as displayed in the figure below.
 
 ![spawn_infrastructure.png](doc/spawn_infrastructure.png)
+
+To create the Kubernetes Cluster in Amazon Web Service, an additional command line interface is used, the _eksctl_ API. The installation is outlined below. To spawn the Kubernetes Cluster, run `$ chmod u+x run_docker_image_on_local_host.sh` to grant permission to execute followed by
+
+`$ create_eks_cluster.sh `
+
+A successful creation of the cluster and the nodes will be visible in CloudFormation as displayed in the figure below.
+
+![spawn_eks_cluster.png](doc/spawn_eks_cluster.png)
 
 **Note**: When the stack is deleted, all it's entities are removed as well. If the entities are created manually, one has to keep track of destruction of all entities after the infrastructure is not longer needed.
 
@@ -39,6 +47,10 @@ A web server is needed to host Jenkins and run tools that implement the continuo
 
 * machine image: Ubuntu Bionic-18.04-amd64 (ami-0e342d72b12109f91)
 * type: t2.micro
+
+#### Spawn a Kubernetes Cluster
+
+#### Spawn a Kubernetes Nodegroup
 
 ### Setup the Web Server for Continuous Integration & Deployment
 After the infrastructure has been spawned, the next step is to _ssh into_ the web server and install the tools that execute the continuous integration & deployment on the machine. First,
