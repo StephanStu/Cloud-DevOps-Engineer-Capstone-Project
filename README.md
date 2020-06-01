@@ -165,7 +165,7 @@ The previously created docker image is now pushed into the container repository 
 ### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
 Jenkins will be available on port 8080 of the web server. The URL can be found in the EC2-Management Console as shown in the figure below.
 
-![get_jenkins_url_from_webserver.png](doc/get_jenkins_url_from_webserver.png.png)
+![get_jenkins_url_from_webserver.png](doc/get_jenkins_url_from_webserver.png)
 
 To install Jenkins follow these steps:
 #### Step 1: Update existing packages
@@ -238,7 +238,9 @@ on the host to complete this step. This should lead to the outputs displayed bel
 ![start_jenkins_on_host](doc/start_jenkins_on_host.png)
 
 #### Step 9: Get initial password and unlock Jenkins
-Catch the initial password on the host and go to port 8080 of the server. Here, Jenkins waits to be unlocked. Use the password catched above and arrive at what is displayed in the figure below.
+Catch the initial password on the host and go to port 8080 of the server. Here, Jenkins waits to be unlocked. Use the password obtained at the host above and arrive at what is displayed in the figure below.
+
+![say_hello_to_jenkins](doc/say_hello_to_jenkins.png)
 
 #### Step 10: Install PlugIns
 "Blue Ocean" and other required plugins need to be installed. Logged in as an admin, go to the top left, click 'Jenkins', then 'manage Jenkins', and select 'Manage Plugins'.
