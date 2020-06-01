@@ -254,9 +254,7 @@ One the host, run
 ## Section V: Configure the Continuous Integration & Deployment Pipeline
 
 ### Generate Token and Add Repository
-A Token is needed in Jenins to access the Repository. Go to
-https://github.com/settings/tokens/new?scopes=repo,read:user,user:email,write:repo_hook
-and create a Token. Then, in Jenkins select BlueOcean, set up a project, select GitHub as source and enter the Token. The pipeline will now show up with a run. The _classic Jenkins View_  will look like displayed in the figure below
+A token is needed for Jenkins to access the _GitHub_ repository. Generate a token in GitHub. Then, in Jenkins select _BlueOcean_, set up a project, select _GitHub_ as source and enter the token. The pipeline will now show up with a run. The _classic Jenkins View_  will look like displayed in the figure below
 
 ![classic_jenkins_view](doc/classic_jenkins_view.png)
 
@@ -298,6 +296,11 @@ this file must be given permission to run (run `$ chmod u+x upload_docker_to_doc
 After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
 
 ![repository_in_dockerhub](doc/repository_in_dockerhub.png)
+
+### GitHub
+When working with continuous integration & deployment Pipelines and GitHub as configuration management tool, one must be able to create access tokens for tools to operate on the repositorys. To generate these, visit
+https://github.com/settings/tokens/new?scopes=repo,read:user,user:email,write:repo_hook
+and create a token with your credentials.
 
 ### Jenkins
 After installation of Jenkins a few more commands are needed to manage the pipelines:
