@@ -49,11 +49,8 @@ A web server is needed to host Jenkins and run tools that implement the continuo
 * type: t2.micro
 
 #### Spawn a Kubernetes Cluster
-As illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)), a cluster is a set of nodes. These contain the containerized applications, as displayed in the figure below.
+A cluster is a set of nodes, that may be deployed on a number of Amazon EC2 instances. It is created prior to creation of _worker-nodes_.
 
-![cluster](doc/cluster.svg)
-
-A cluster is a set of nodes, that may be deployed on a number of Amazon EC2 instances.
 #### Spawn a Kubernetes Nodegroup
 Worker machines in Kubernetes are called nodes. Nodes contain pods and pods contain the containerized applications - docker images. Amazon's implementation of Kubernetes lets worker nodes run in an account and connect to a cluster's control plane via the cluster API server endpoint. One or more worker nodes are deployed into a node group. A node group is one or more Amazon EC2 instances that are deployed in an Amazon EC2 Auto Scaling group.
 
@@ -179,6 +176,13 @@ Docker-Containers can be considered as single-purpose virtual machines that can 
 * To remove an image from the host: `$ docker rmi [name-of-image]`
 * To list running containers: `$ docker container ls`
 * To stop a container running: `$ docker container stop [ID-of-container]`
+
+### Kubernetes
+Kubernetes is a free & open-source container-orchestration system for automating application deployment, scaling, and management initially designed by Google (see [here](https://en.wikipedia.org/wiki/Kubernetes)). It aims to provide a platform for automating deployment, scaling, and operations of application containers across clusters of hosts, as illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)),
+
+![cluster](doc/cluster.svg)
+
+Containers usually means Docker-Images but a range of container tools is supported. Many cloud services offer a Kubernetes-based platform or infrastructure as a service (PaaS or IaaS) on which Kubernetes can be deployed as a platform-providing service. Many vendors also provide their own branded Kubernetes distributions, such as Amazon Web Service's [Elastic Kubernetes Services](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html).
 
 ### Python-Commands for Virtual Environments
 Creating a virtual environment makes it easier to provide necessary packages for an application in a location on the host that is _under full management of the user_.
