@@ -254,7 +254,16 @@ One the host, run
 ## Section V: Configure the Continuous Integration & Deployment Pipeline
 
 ### Generate Token and Add Repository
+A Token is needed in Jenins to access the Repository. Go to
 https://github.com/settings/tokens/new?scopes=repo,read:user,user:email,write:repo_hook
+and create a Token. Then, in Jenkins select BlueOcean, set up a project, select GitHub as source and enter the Token. The pipeline will now show up with a run. The _classic Jenkins View_  will look like displayed in the figure below
+
+![classic_jenkins_view](doc/classic_jenkins_view.png)
+
+
+### Scan Repository Triggers
+In the _classic Jenkins View_ go the project, "Cloud-DevOps-Engineer-Capstone-Project" and then select _Configure_ on the left hand. select _Scan Repository Triggers_ and switch to 1 Minute.
+Now Jenkins will scan the GitHub repository each minute for changes; if there are changes, the pipeline will run.
 
 ## Section VI: Continuous Integration & Deployment Pipeline At Work
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
