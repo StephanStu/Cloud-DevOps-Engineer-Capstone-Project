@@ -9,12 +9,23 @@ In this project the skills & knowledge which were developed throughout the Cloud
 * Building Kubernetes clusters
 * Building Docker containers in pipelines
 
-## Project Overview
+## I Project Overview
+In this project the blue/green-deployment pattern is implemented in a cloud-native fashion with Jenkins and a set of services of Amazon Web Services. A static website is deployed in a web servers, which is a containerized application that runs in a Kubernetes Cluster. 
 
-## Pipeline Setup
-This section describes how to set up the continuous integration / continuous deployment pipeline that this repository contains.
-### Spawn the Infrastructure using CloudFormation
-The stack in Amazon Web Service is created by
+## II Results & Guideline to Build this Project
+This section wraps up the achievements of this project.
+The following section describe the details of the implementation of the blue/green-deployment pattern,
+
+* Section III describes in detail how to spawn the infrastructure in Amazon Web Services using CloudFormation.
+* Section IV describes in detail how to setup the web server, the operates the pipeline
+* Section V describes the pipeline in detail.
+* Section VI wraps up knowledge on Kubernetes, Docker and useful ways-of-working.
+
+## III Spawn the Infrastructure using CloudFormation
+This section describes how to set up the infrastructure for the continuous integration / continuous deployment pipeline that this repository contains. The infrastructure is spawned using Amazon Web Service's CloudFormation, a language for deploying _infrastructure-as-code_. One of the many advantages of CloudFormation is, that the infrastructure can be deleted and updated from command line, so it is easy to keep track of a large number of entities in an account.
+
+
+The _stack_ in Amazon Web Service is created by
 `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
 After running the CloudFormation script with parameters, the stack appears with all resources and outputs as displayed in the figure below.
 
@@ -30,32 +41,32 @@ A successful creation of the cluster and the nodes will be visible in CloudForma
 
 **Note**: When the stack is deleted, all it's entities are removed as well. If the entities are created manually, one has to keep track of destruction of all entities after the infrastructure is not longer needed.
 
-#### Spawn a Repository in Elastic Container Registry
+### Spawn a Repository in Elastic Container Registry
 As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
 The repository name is defined in _parameters.json_, by the variable `RepositoryName`.
 Note: Inside _infrastructure.yml_, a user has been hardcoded with rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`. If you pull this GitHub-Repository and spawn the infrastructure, be sure to add and / or replace your users here.
 
-#### Spawn a Security Group
+### Spawn a Security Group
 A firewall solution that performs one primary function is needed: Filter incoming and outgoing traffic from an EC2 instance. In Amazon Web Service this solution is called a _Security Group_. It accomplishes this filtering function at the TCP and IP layers, via their respective ports, and source/destination IP addresses. The spawned filter allows
 
 * outbound traffic to everyone.
 * inboud traffic via SSH from one IP-Address - the IP-Address of the administrator / Cloud DevOps Engineer, who must ssh into the server (to be provided in _parameters.json_ as , `UdacityCapstoneDeveloperIP`)
 * inbound traffic via TCP on port 80 from one IP-Address - the IP-Address of the administrator / Cloud DevOps Engineer, who must configure Jenkins (to be provided in _parameters.json_ as , `UdacityCapstoneDeveloperIP`)
 
-#### Spawn a Web Server for Continuous Integration & Deployment
+### Spawn a Web Server for Continuous Integration & Deployment
 A web server is needed to host Jenkins and run tools that implement the continuous integration- & deployment-pipeline. The web server is an instance of Amazon Web Service's EC2-Solutions with
 
 * machine image: Ubuntu Bionic-18.04-amd64 (ami-0e342d72b12109f91)
 * type: t2.micro
 
-#### Spawn a Kubernetes Cluster
+### Spawn a Kubernetes Cluster
 A cluster is a set of nodes, that may be deployed on a number of Amazon EC2 instances. It is created prior to creation of _worker-nodes_.
 
-#### Spawn a Kubernetes Nodegroup
+### Spawn a Kubernetes Nodegroup
 Worker machines in Kubernetes are called nodes. Nodes contain pods and pods contain the containerized applications - docker images. Amazon's implementation of Kubernetes lets worker nodes run in an account and connect to a cluster's control plane via the cluster API server endpoint. One or more worker nodes are deployed into a node group. A node group is one or more Amazon EC2 instances that are deployed in an Amazon EC2 Auto Scaling group.
 
-### Setup the Web Server for Continuous Integration & Deployment
-After the infrastructure has been spawned, the next step is to _ssh into_ the web server and install the tools that execute the continuous integration & deployment on the machine. First,
+## IV Setup the Web Server for Continuous Integration & Deployment
+After the infrastructure has been spawned, the next step is to _ssh into_ the web server and install the tools that execute continuous integration & deployment on the machine. First,
 
 `$ sudo apt install make`
 
@@ -66,7 +77,7 @@ The _Makefile_ can be found in the root of this repository; the repository must 
 
 Then, cd into the created folder to and `$ ls` will display the _Makefile_.
 
-#### Install Amazon Web Service's Command Line Interface & Kubernetes Cluster Control
+### Install Amazon Web Service's Command Line Interface & Kubernetes Cluster Control
 Amazon Web Service's Command Line Interface is needed to access the infrastructure from the web server in an automatic fashion, e.g. to upload container images to the container repository provided by Amazon Web Service. To install Amazon Web Service's Command Line Interface,
 
 `$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"``
@@ -78,7 +89,7 @@ Then, `$ unzip awscliv2.zip` and `$ sudo ./aws/install`. The installation can be
 Move the extracted binary, `$ sudo mv /tmp/eksctl /usr/local/bin` and test that installation was successful by `$ eksctl version`. These guidelines have been taken from [this source](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html).
 **Note**: The GitTag version should be at least 0.20.0.
 
-#### Install Brew - A package management system
+### Install Brew - A package management system
 Brew is package management system that is needed to deploy necessary tools on the machine. To install brew, enable execution of _install_brew.sh_,
 
 `$ chmod u+x install_brew.sh`
@@ -97,7 +108,7 @@ and add Homebrew to your PATH,
 
 **Note:** This step requires the attention of the administrator, i.e. user input during execution is requested.
 
-#### Install Docker
+### Install Docker
 To install Docker, enable execution of _install_docker.sh_,
 
 `$ chmod u+x install_docker.sh`
@@ -108,8 +119,8 @@ and
 
 **Note:** This step requires the attention of the administrator, i.e. user input during execution is requested.
 
-#### Install GCC, hadolint & tidy
-It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipleine requires to check Docker-Files and .html-files prior to their deyployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, _linters_ for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
+### Install GCC, hadolint & tidy
+It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipeline requires to check Docker-Files and .html-files prior to their deployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, _linters_ for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
 
 `$ make install`
 
@@ -119,7 +130,7 @@ Two linters are deployed on the machine: The linter for Docker-files is _hadolin
 
 **Note:** It is recommended to run `make test` to check if installation has been successfull. If this command does not exit with `Toolchain is ready.`, errors must be fixed before the next step.
 
-#### Run the Docker-Image
+### Run the Docker-Image on the Host
 This file must be given permission to run (run `$ chmod u+x run_docker_image_on_local_host.sh` first). The docker image is build by
 
 `$ chmod u+x build_docker_image.sh` (to allow execution) followed by `$ ./build_docker_image.sh`
@@ -136,9 +147,9 @@ Then, the web server is running as a containerized application and publishes the
 
 **Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
 
-#### Configure Credentials of Amazon Web Service's Command Line Interface & Upload the Image to the Container Repository
+### Configure Credentials of Amazon Web Service's Command Line Interface & Upload the Image to the Container Repository
 One goal of the pipeline is to keep track of healthy container images. Therefor, linted & tested images are kept in a container repository provided by Amazon Web Services, the Elastic Container Registry, that has been spawned as part of the infrastructure.
-To enable this, configure the credentials of the command line interface on the server locally with approproiate user credentials (access to ECR is needed) by,
+To enable this, configure the credentials of the command line interface on the server locally with appropriate user credentials (access to ECR is needed) by,
 
 `$ aws configure`
 
@@ -151,11 +162,12 @@ The previously created docker image is now pushed into the container repository 
 
 ![push_containers_to_ecr](doc/push_containers_to_ecr.png)
 
-#### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
+### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
 To install Jenkins, the Docker-Image must be stopped first, such that the port 8000 is vacant.
 
-## Pipeline Components
+## V Pipeline At Work
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
+
 ### Lint the Dockerfile
 The Dockerfile gives docker instructions how to build the image and what to do with it, e.g. run the image with port-forwarding. The Dockerfile is checked both syntactically and with respect to non-functional guidelines (e.g. _Dockerfile:2 DL3006 Always tag the version of an image explicitly_), such that one can be sure, the image builds correctly before kicking off the build. The tool used to perform these checks is hadolint, to run the checks
 
@@ -165,7 +177,7 @@ The Dockerfile gives docker instructions how to build the image and what to do w
 
 
 
-## Knowledge
+## VI Knowledge
 This section wraps up useful knowledge that is needed in the context of cloud-native development operations.
 
 ### Docker-Commands
