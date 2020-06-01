@@ -163,7 +163,92 @@ The previously created docker image is now pushed into the container repository 
 ![push_containers_to_ecr](doc/push_containers_to_ecr.png)
 
 ### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
-To install Jenkins, the Docker-Image must be stopped first, such that the port 8000 is vacant.
+Jenkins will be available on port 8080 of the web server. The URL can be found in the EC2-Management Console as shown in the figure below.
+
+![get_jenkins_url_from_webserver.png](doc/get_jenkins_url_from_webserver.png.png)
+
+To install Jenkins follow these steps:
+#### Step 1: Update existing packages
+Run
+
+`$ sudo apt-get update`
+
+on the host to complete this step.
+
+#### Step 2:  Install Java
+Run
+
+`$ sudo apt install -y default-jdk`
+
+on the host to complete this step.
+
+#### Step 3: Download Jenkins package.
+You can go to http://pkg.jenkins.io/debian/ to see the available commands. First, add a key to your system by
+
+`$ wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -``
+
+#### Step 4: Add the following entry in your /etc/apt/sources.list:
+Run
+
+`$ sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'`
+
+on the host to complete this step.
+
+#### Step 5a): Update your local package index
+Run
+
+`$ sudo apt-get update`
+
+on the host to complete this step.
+
+#### Step 5b): _Sometimes_ packages are not (yet) valid and keys must be added manually
+This can be resolved shown in the figure below
+
+![manage_packages_before_install_jenkins](doc/manage_packages_before_install_jenkins.png)
+
+Run this command and replace the missing keys:
+
+`$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <ENTER MISSING KEY HERE>`
+
+#### Step 6: Install Jenkins
+Run
+
+`$ sudo apt-get install -y jenkins`
+
+on the host to complete this step.
+
+#### Step 7: Start the Jenkins server
+Run
+
+`$ sudo systemctl start jenkins`
+
+on the host to complete this step.
+
+#### Step 8: Enable the service to load during boot
+Run
+
+`$ sudo systemctl enable jenkins`
+
+and
+
+`$ sudo systemctl status jenkins`
+
+on the host to complete this step. This should lead to the outputs displayed below.
+
+![start_jenkins_on_host](doc/start_jenkins_on_host.png)
+
+#### Step 9: Get initial password and unlock Jenkins
+Catch the initial password on the host and go to port 8080 of the server. Here, Jenkins waits to be unlocked. Use the password catched above and arrive at what is displayed in the figure below.
+
+#### Step 10: Install PlugIns
+"Blue Ocean" and other required plugins need to be installed. Logged in as an admin, go to the top left, click 'Jenkins', then 'manage Jenkins', and select 'Manage Plugins'.
+Use the "Available" tab, filter by "Blue Ocean," select the first option ("BlueOcean aggregator") and install without a restart. Filter once again for "pipeline-aws" and install, this time selecting "Download now and install after restart."
+One the host, run
+
+`$ sudo systemctl restart jenkins`
+
+ An "Open Blue Ocean" link should show up in the sidebar. Click it, and it will take you to the "Blue Ocean" screen, where projects will be managed.
+
 
 ## Section V: Pipeline At Work
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
@@ -198,6 +283,12 @@ this file must be given permission to run (run `$ chmod u+x upload_docker_to_doc
 After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
 
 ![repository_in_dockerhub](doc/repository_in_dockerhub.png)
+
+### Jenkins
+After installation of Jenkins a few more commands are needed to manage the pipelines:
+
+* Get the initial password of Jenkins: `$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+* Restart Jenkins on the host: `$ sudo systemctl restart jenkins`
 
 ### Kubernetes
 Kubernetes is a free & open-source container-orchestration system for automating application deployment, scaling, and management initially designed by Google (see [here](https://en.wikipedia.org/wiki/Kubernetes)). It aims to provide a platform for automating deployment, scaling, and operations of application containers across clusters of hosts, as illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)),
