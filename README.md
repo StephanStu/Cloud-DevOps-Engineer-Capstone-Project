@@ -9,10 +9,10 @@ In this project the skills & knowledge which were developed throughout the Cloud
 * Building Kubernetes clusters
 * Building Docker containers in pipelines
 
-## I Project Overview
-In this project the blue/green-deployment pattern is implemented in a cloud-native fashion with Jenkins and a set of services of Amazon Web Services. A static website is deployed in a web servers, which is a containerized application that runs in a Kubernetes Cluster. 
+## Section I: Project Overview
+In this project the blue/green-deployment pattern is implemented in a cloud-native fashion with Jenkins and a set of services of Amazon Web Services. A static website is deployed in a web servers, which is a containerized application that runs in a Kubernetes Cluster.
 
-## II Results & Guideline to Build this Project
+## Section II: Results & Guideline to Build this Project
 This section wraps up the achievements of this project.
 The following section describe the details of the implementation of the blue/green-deployment pattern,
 
@@ -21,7 +21,7 @@ The following section describe the details of the implementation of the blue/gre
 * Section V describes the pipeline in detail.
 * Section VI wraps up knowledge on Kubernetes, Docker and useful ways-of-working.
 
-## III Spawn the Infrastructure using CloudFormation
+## Section III: Spawn the Infrastructure using CloudFormation
 This section describes how to set up the infrastructure for the continuous integration / continuous deployment pipeline that this repository contains. The infrastructure is spawned using Amazon Web Service's CloudFormation, a language for deploying _infrastructure-as-code_. One of the many advantages of CloudFormation is, that the infrastructure can be deleted and updated from command line, so it is easy to keep track of a large number of entities in an account.
 
 
@@ -165,7 +165,7 @@ The previously created docker image is now pushed into the container repository 
 ### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
 To install Jenkins, the Docker-Image must be stopped first, such that the port 8000 is vacant.
 
-## V Pipeline At Work
+## Section V: Pipeline At Work
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
 
 ### Lint the Dockerfile
@@ -177,7 +177,7 @@ The Dockerfile gives docker instructions how to build the image and what to do w
 
 
 
-## VI Knowledge
+## Section VI: Knowledge
 This section wraps up useful knowledge that is needed in the context of cloud-native development operations.
 
 ### Docker-Commands
