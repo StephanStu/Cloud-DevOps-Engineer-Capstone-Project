@@ -190,7 +190,7 @@ You can go to http://pkg.jenkins.io/debian/ to see the available commands. First
 #### Step 4: Add the following entry in your /etc/apt/sources.list:
 Run
 
-`$ sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'`
+`$ sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list' `
 
 on the host to complete this step.
 
