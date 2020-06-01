@@ -1,8 +1,10 @@
 pipeline {
-	agent any
-	stages {
-    stage ('Initializing') {
-        sh 'echo "Jenkins works..."'
-    }
-  }
+	   agent any
+	   stages {
+         stage ('Initializing') {
+             steps{
+                 sh 'echo "Jenkins works..."'
+             }
+         }
+     }
 }
