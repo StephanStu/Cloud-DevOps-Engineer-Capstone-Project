@@ -251,8 +251,12 @@ One the host, run
 
  An "Open Blue Ocean" link should show up in the sidebar. Click it, and it will take you to the "Blue Ocean" screen, where projects will be managed.
 
+## Section V: Configure the Continuous Integration & Deployment Pipeline
 
-## Section V: Pipeline At Work
+### Generate Token and Add Repository
+https://github.com/settings/tokens/new?scopes=repo,read:user,user:email,write:repo_hook
+
+## Section VI: Continuous Integration & Deployment Pipeline At Work
 This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
 
 ### Lint the Dockerfile
@@ -264,7 +268,7 @@ The Dockerfile gives docker instructions how to build the image and what to do w
 
 
 
-## Section VI: Knowledge
+## Section VII: Knowledge
 This section wraps up useful knowledge that is needed in the context of cloud-native development operations.
 
 ### Docker-Commands
