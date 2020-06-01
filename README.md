@@ -65,7 +65,7 @@ A cluster is a set of nodes, that may be deployed on a number of Amazon EC2 inst
 ### Spawn a Kubernetes Nodegroup
 Worker machines in Kubernetes are called nodes. Nodes contain pods and pods contain the containerized applications - docker images. Amazon's implementation of Kubernetes lets worker nodes run in an account and connect to a cluster's control plane via the cluster API server endpoint. One or more worker nodes are deployed into a node group. A node group is one or more Amazon EC2 instances that are deployed in an Amazon EC2 Auto Scaling group.
 
-## IV Setup the Web Server for Continuous Integration & Deployment
+## Section IV: Setup the Web Server for Continuous Integration & Deployment
 After the infrastructure has been spawned, the next step is to _ssh into_ the web server and install the tools that execute continuous integration & deployment on the machine. First,
 
 `$ sudo apt install make`
