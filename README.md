@@ -177,6 +177,16 @@ Docker-Containers can be considered as single-purpose virtual machines that can 
 * To list running containers: `$ docker container ls`
 * To stop a container running: `$ docker container stop [ID-of-container]`
 
+### DockerHub: An Alternative Container Repository: _upload docker to dockerhub.sh_
+For those, who do not work inside Amazon Webs Service and use their local, native distribution of Kubernetes, there is an alternative to managing Docker-Images - the [DockerHub](https://hub.docker.com/). To upload an image, you have to register in DockerHub. Then,
+this file must be given permission to run (run `$ chmod u+x upload_docker_to_dockerhub.sh` first). The docker image is uploaded to DockerHub by
+
+`$ ./upload_docker_to_dockerhub.sh`
+
+After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
+
+![repository_in_dockerhub](doc/repository_in_dockerhub.png)
+
 ### Kubernetes
 Kubernetes is a free & open-source container-orchestration system for automating application deployment, scaling, and management initially designed by Google (see [here](https://en.wikipedia.org/wiki/Kubernetes)). It aims to provide a platform for automating deployment, scaling, and operations of application containers across clusters of hosts, as illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)),
 
@@ -188,12 +198,3 @@ Containers usually means Docker-Images but a range of container tools is support
 Creating a virtual environment makes it easier to provide necessary packages for an application in a location on the host that is _under full management of the user_.
 
 * To create a virtual environment: `$ python3 -m venv [name-of-environment]`
-
-### DockerHub: An Alternative Container Repository: _upload docker to dockerhub.sh_
-This file must be given permission to run (run `$ chmod u+x upload_docker_to_dockerhub.sh` first). The docker image is uploaded to DockerHub by
-
-`$ ./upload_docker_to_dockerhub.sh`
-
-After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
-
-![repository_in_dockerhub](doc/repository_in_dockerhub.png)
