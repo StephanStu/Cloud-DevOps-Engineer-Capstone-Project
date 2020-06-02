@@ -4,7 +4,7 @@ pipeline {
 	  stage('Publish Purpose') {
 		  steps {
 			  sh '''
-				  sh 'echo "Jenkins runs the Pipeline on the Kubernetes Cluster now..."'
+				  echo "Jenkins runs the Pipeline on the Kubernetes Cluster now..."
 				  export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/hadolint
 			  '''
 			}
