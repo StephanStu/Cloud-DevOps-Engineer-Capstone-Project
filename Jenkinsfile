@@ -5,6 +5,12 @@ pipeline {
 		  steps {
 			  sh '''
 				  echo "Jenkins runs the Pipeline on the Kubernetes Cluster now..."
+			  '''
+			}
+		}
+		stage('Set PATH-Variables for this Session') {
+		  steps {
+			  sh '''
 				  export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/hadolint
 			  '''
 			}
