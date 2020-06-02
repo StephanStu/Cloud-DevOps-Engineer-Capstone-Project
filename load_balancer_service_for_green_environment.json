@@ -2,9 +2,9 @@
    "kind":"Service",
    "apiVersion":"v1",
    "metadata":{
-      "name":"loadbalancer-for-blue-deployment",
+      "name":"loadbalancer-for-green-deployment",
       "labels":{
-         "app":"loadbalancer-for-blue-deployment"
+         "app":"loadbalancer-for-green-deployment"
       }
    },
    "spec":{
@@ -16,7 +16,7 @@
          }
       ],
       "selector":{
-         "app":"blue"
+         "app":"green"
       },
       "type": "LoadBalancer"
    }
