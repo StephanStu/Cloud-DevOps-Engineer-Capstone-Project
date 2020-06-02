@@ -316,6 +316,7 @@ After installation of Jenkins a few more commands are needed to manage the pipel
 
 * Get the initial password of Jenkins: `$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
 * Restart Jenkins on the host: `$ sudo systemctl restart jenkins`
+* Add Jenkins to users: `$ sudo usermod -a -G docker jenkins`
 
 ### Kubernetes
 Kubernetes is a free & open-source container-orchestration system for automating application deployment, scaling, and management initially designed by Google (see [here](https://en.wikipedia.org/wiki/Kubernetes)). It aims to provide a platform for automating deployment, scaling, and operations of application containers across clusters of hosts, as illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)),

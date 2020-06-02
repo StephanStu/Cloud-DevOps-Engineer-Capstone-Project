@@ -23,9 +23,6 @@ pipeline {
     stage('Building the Docker-Image') {
 		  steps {
         sh '''
-				  sudo usermod -aG docker ${USER}
-					su -s ${USER}
-					sudo systemctl restart docker
           chmod u+x build_docker_image.sh
 			    ./build_docker_image.sh
         '''
