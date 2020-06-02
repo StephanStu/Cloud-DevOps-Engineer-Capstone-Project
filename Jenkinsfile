@@ -13,7 +13,10 @@ pipeline {
 		}
     stage('Verifying the Dockerfile') {
 		  steps {
-			  sh 'hadolint Dockerfile'
+			  sh '''
+			    export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/hadolint
+			    hadolint Dockerfile
+				'''
 			}
 		}
     stage('Building the Docker-Image') {
