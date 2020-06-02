@@ -224,7 +224,7 @@ Run
 
 on the host to complete this step.
 
-#### Step 8: Enable the service to load during boot
+#### Step 8: Enable the service to load during boot & add Jenkins to users
 Run
 
 `$ sudo systemctl enable jenkins`
@@ -236,6 +236,10 @@ and
 on the host to complete this step. This should lead to the outputs displayed below.
 
 ![start_jenkins_on_host](doc/start_jenkins_on_host.png)
+
+Make sure, that Jenkins is able to access docker by
+
+`$ sudo usermod -a -G docker jenkins`
 
 #### Step 9: Get initial password and unlock Jenkins
 Catch the initial password on the host and go to port 8080 of the server. Here, Jenkins waits to be unlocked. Use the password obtained at the host above and arrive at what is displayed in the figure below.
@@ -316,7 +320,7 @@ After installation of Jenkins a few more commands are needed to manage the pipel
 
 * Get the initial password of Jenkins: `$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
 * Restart Jenkins on the host: `$ sudo systemctl restart jenkins`
-* Add Jenkins to users: `$ sudo usermod -a -G docker jenkins`
+* Add Jenkins to docker users: `$ sudo usermod -a -G docker jenkins`
 
 ### Kubernetes
 Kubernetes is a free & open-source container-orchestration system for automating application deployment, scaling, and management initially designed by Google (see [here](https://en.wikipedia.org/wiki/Kubernetes)). It aims to provide a platform for automating deployment, scaling, and operations of application containers across clusters of hosts, as illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)),
