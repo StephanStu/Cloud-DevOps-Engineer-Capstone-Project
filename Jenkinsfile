@@ -30,10 +30,12 @@ pipeline {
 		}
 		stage('Push the Docker-Image to Elastic Container Registry') {
 		  steps {
-        sh '''
-          chmod u+x upload_docker_to_ecr.sh
-			    ./upload_docker_to_ecr.sh
-        '''
+			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
+          sh '''
+            chmod u+x upload_docker_to_ecr.sh
+			      ./upload_docker_to_ecr.sh
+          '''
+				}
 			}
 		}
   }
