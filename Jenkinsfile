@@ -8,13 +8,6 @@ pipeline {
 			  '''
 			}
 		}
-		stage('Set PATH-Variables for this Session') {
-		  steps {
-			  sh '''
-				  export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/hadolint
-			  '''
-			}
-		}
 		stage('Verifying the Artifacts of the Website') {
 		  steps {
 			  sh 'tidy -q -e *.html'
@@ -23,7 +16,7 @@ pipeline {
     stage('Verifying the Dockerfile') {
 		  steps {
 			  sh '''
-			    hadolint Dockerfile
+			    /home/linuxbrew/.linuxbrew/bin/hadolint Dockerfile
 				'''
 			}
 		}
