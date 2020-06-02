@@ -253,6 +253,15 @@ One the host, run
 
 ## Section V: Configure the Continuous Integration & Deployment Pipeline
 
+### Set up Amazon Web Service Credentials in Jenkins
+Credentials for Amazon Web Service need to be created so that they can be used in the pipeline.
+On main Jenkins page, select the “Credentials” link from the sidebar. Click on "(global)" from the list, and then "Add credentials" from the sidebar. Choose "AWS Credentials" from the dropdown and
+
+* add an ID and a description like "AWS Credentials for Udacity Capstone Project"
+* fill in the AWS Key and Secret Access Key generated when the IAM role was created.
+
+Click OK, and the credentials will now be available for the rest of the system.
+
 ### Generate Token and Add Repository
 A token is needed for Jenkins to access the _GitHub_ repository. Generate a token in GitHub. Then, in Jenkins select _BlueOcean_, set up a project, select _GitHub_ as source and enter the token. The pipeline will now show up with a run. The _classic Jenkins View_  will look like displayed in the figure below
 
@@ -314,6 +323,16 @@ Kubernetes is a free & open-source container-orchestration system for automating
 ![cluster](doc/cluster.svg)
 
 Containers usually means Docker-Images but a range of container tools is supported. Many cloud services offer a Kubernetes-based platform or infrastructure as a service (PaaS or IaaS) on which Kubernetes can be deployed as a platform-providing service. Many vendors also provide their own branded Kubernetes distributions, such as Amazon Web Service's [Elastic Kubernetes Services](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html).
+
+The preferred approach for managing clusters is through declarative files called resource configurations used with the `Kubectl apply` command. This command reads a local (or remote) file structure and modifies the cluster state to reflect the declared intent. Some useful commands are
+
+* to create resources: `$ kubectl apply -f ./my-manifest.yaml`           
+* to crate resources from multiple files: `$ kubectl apply -f ./my1.yaml -f ./my2.yaml`      
+* to create resources from all files in a given directory: `$ kubectl apply -f ./<directory>`         
+* to create a resource from a URL: `$ kubectl apply -f https://git.io/vPieo`            
+* to start an instance of Ngnix `$ kubectl create deployment nginx --image=nginx`  
+* to show pods and manifests (SVCs): `$ kubectl explain pods,svc`                   
+
 
 ### Python-Commands for Virtual Environments
 Creating a virtual environment makes it easier to provide necessary packages for an application in a location on the host that is _under full management of the user_.
