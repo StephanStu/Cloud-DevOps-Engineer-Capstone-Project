@@ -38,12 +38,43 @@ pipeline {
 				}
 			}
 		}
-		stage('Deploy the Docker Image in the Blue Environment') {
+		stage('Deploy in the Blue Environment & Direct Traffic here') {
 		  steps {
 			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
           sh '''
 					  aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectCluster
             kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectCluster
+						kubectl apply -f ./replication_controller_for_blue_environment.json
+						kubectl apply -f ./load_balancer_service_for_blue_environment.json
+          '''
+				}
+			}
+		}
+		stage('Deploy in the Green Environment') {
+		  steps {
+			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
+          sh '''
+					  aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectCluster
+            kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectCluster
+						kubectl apply -f ./replication_controller_for_green_environment.json
+          '''
+				}
+			}
+		}
+		stage('Wait for Approval to Re-Direct Traffic to Green Environment') {
+		  steps {
+			  sh '''
+				  input "Approve to re-direct traffic or break."
+			  '''
+				}
+		}
+		stage('Re-Direct Traffic to Green Environment') {
+		  steps {
+			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
+          sh '''
+					  aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectCluster
+            kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectCluster
+						kubectl apply -f ./load_balancer_service_for_green_environment.json
           '''
 				}
 			}
