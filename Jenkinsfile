@@ -38,7 +38,7 @@ pipeline {
 				}
 			}
 		}
-		stage('Deploy in the Blue Environment & Direct Traffic here') {
+		stage('Deploy in the Blue Environment & Direct Traffic here for Testing') {
 		  steps {
 			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
           sh '''
@@ -50,30 +50,18 @@ pipeline {
 				}
 			}
 		}
-		stage('Deploy in the Green Environment') {
+		stage('Run Load Tests, Functional Tests,...') {
+		  steps {
+				  input "Approve that all tests outputs are OK by hitting ENTER."
+				}
+		}
+		stage('Deploy in the Green Environment, Direct Traffic to Production Environment') {
 		  steps {
 			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
           sh '''
 					  aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectCluster
             kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectCluster
 						kubectl apply -f ./replication_controller_for_green_environment.json
-          '''
-				}
-			}
-		}
-		stage('Wait for Approval to Re-Direct Traffic to Green Environment') {
-		  steps {
-			  sh '''
-				  input "Approve to re-direct traffic or break."
-			  '''
-				}
-		}
-		stage('Re-Direct Traffic to Green Environment') {
-		  steps {
-			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
-          sh '''
-					  aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectCluster
-            kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectCluster
 						kubectl apply -f ./load_balancer_service_for_green_environment.json
           '''
 				}
