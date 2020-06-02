@@ -28,5 +28,13 @@ pipeline {
         '''
 			}
 		}
+		stage('Push the Docker-Image to Elastic Container Registry') {
+		  steps {
+        sh '''
+          chmod u+x upload_docker_to_ecr.sh
+			    ./upload_docker_to_ecr.sh
+        '''
+			}
+		}
   }
 }
