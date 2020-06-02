@@ -3,7 +3,10 @@ pipeline {
 	stages {
 	  stage('Publish Purpose') {
 		  steps {
-			  sh 'echo "Jenkins runs the Pipeline on the Kubernetes Cluster now..."'
+			  sh '''
+				  sh 'echo "Jenkins runs the Pipeline on the Kubernetes Cluster now..."'
+				  export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/hadolint
+			  '''
 			}
 		}
 		stage('Verifying the Artifacts of the Website') {
@@ -14,7 +17,6 @@ pipeline {
     stage('Verifying the Dockerfile') {
 		  steps {
 			  sh '''
-			    export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/hadolint
 			    hadolint Dockerfile
 				'''
 			}
