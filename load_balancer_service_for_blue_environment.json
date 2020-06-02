@@ -10,7 +10,7 @@
    "spec":{
       "ports": [
          {
-           "protocol":TCP
+           "protocol": "TCP",
            "port":8000,
            "targetPort":80
          }
