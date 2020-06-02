@@ -19,7 +19,7 @@ The following section describe the details of the implementation of the blue/gre
 * Section III describes in detail how to spawn the infrastructure in Amazon Web Services using CloudFormation.
 * Section IV describes in detail how to setup the web server, the operates the pipeline
 * Section V describes the pipeline in detail.
-* Section VI wraps up knowledge on Kubernetes, Docker and useful ways-of-working.
+* Section VI wraps up knowledge on Kubernetes, Docker and useful ways-of-working with Kubernetes.
 
 ## Section III: Spawn the Infrastructure using CloudFormation
 This section describes how to set up the infrastructure for the continuous integration / continuous deployment pipeline that this repository contains. The infrastructure is spawned using Amazon Web Service's CloudFormation, a language for deploying _infrastructure-as-code_. One of the many advantages of CloudFormation is, that the infrastructure can be deleted and updated from command line, so it is easy to keep track of a large number of entities in an account.
@@ -324,7 +324,9 @@ Kubernetes is a free & open-source container-orchestration system for automating
 
 Containers usually means Docker-Images but a range of container tools is supported. Many cloud services offer a Kubernetes-based platform or infrastructure as a service (PaaS or IaaS) on which Kubernetes can be deployed as a platform-providing service. Many vendors also provide their own branded Kubernetes distributions, such as Amazon Web Service's [Elastic Kubernetes Services](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html).
 
-The preferred approach for managing clusters is through declarative files called resource configurations used with the `Kubectl apply` command. This command reads a local (or remote) file structure and modifies the cluster state to reflect the declared intent. Some useful commands are
+#### Infrastructure-as-Code in Kubernetes: useful Commands
+
+The preferred approach for managing clusters is through declarative files called resource configurations used with the `kubectl apply` command. This command reads a local (or remote) file structure and modifies the cluster state to reflect the declared intent. Some useful commands are
 
 * to create resources: `$ kubectl apply -f ./my-manifest.yaml`           
 * to crate resources from multiple files: `$ kubectl apply -f ./my1.yaml -f ./my2.yaml`      
@@ -332,6 +334,15 @@ The preferred approach for managing clusters is through declarative files called
 * to create a resource from a URL: `$ kubectl apply -f https://git.io/vPieo`            
 * to start an instance of Ngnix `$ kubectl create deployment nginx --image=nginx`  
 * to show pods and manifests (SVCs): `$ kubectl explain pods,svc`                   
+
+#### Services, Load Balancing & Networking in Kubernetes
+
+A rich source of knowledge for services in Kubernetes is [here](https://kubernetes.io/docs/concepts/services-networking/service/). In Kubernetes, a service is an abstract way to expose an application running on a set of Pods as a network service.
+With Kubernetes there is no need to modify an application, such that it provides an unfamiliar service discovery mechanism. Kubernetes gives Pods their own IP addresses and a single DNS name for a set of Pods, and can load-balance across them.
+
+#### Controllers in Kubernetes
+
+A rich source of knowledge for controllers in Kubernetes is [here](https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/). In this project a _ReplicationController_ is used, that ensures that a specified number of pod replicas are running at any one time. If there are too many pods, the ReplicationController terminates the extra pods. If there are too few, the ReplicationController starts more pods. Unlike manually created pods, the pods maintained by a ReplicationController are automatically replaced if they fail, are deleted, or are terminated.
 
 
 ### Python-Commands for Virtual Environments
