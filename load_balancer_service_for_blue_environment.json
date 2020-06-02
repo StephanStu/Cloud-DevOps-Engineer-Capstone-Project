@@ -1,0 +1,22 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"loadbalancer_for_blue_green_deployment",
+      "labels":{
+         "app":"loadbalancer_for_blue_green_deployment"
+      }
+   },
+   "spec":{
+      "ports": [
+         {
+           "port":8000,
+           "targetPort":80
+         }
+      ],
+      "selector":{
+         "app":"blue"
+      },
+      "type": "LoadBalancer"
+   }
+}
