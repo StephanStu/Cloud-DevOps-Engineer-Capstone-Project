@@ -6,14 +6,14 @@ pipeline {
 			  sh 'echo "Jenkins runs the Pipeline on the Kubernetes Cluster now..."'
 			}
 		}
+		stage('Verifying the Artifacts of the Website') {
+		  steps {
+			  sh 'tidy -q -e *.html'
+			}
+		}
     stage('Verifying the Dockerfile') {
 		  steps {
 			  sh 'hadolint Dockerfile'
-			}
-		}
-    stage('Verifying the Artifacts of the Website') {
-		  steps {
-			  sh 'tidy index.html'
 			}
 		}
     stage('Building the Docker-Image') {
