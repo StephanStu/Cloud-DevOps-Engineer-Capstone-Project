@@ -38,5 +38,14 @@ pipeline {
 				}
 			}
 		}
+		stage('Deploy the Docker Image in the Blue Environment') {
+		  steps {
+			  withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
+          sh '''
+            kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectCluster
+          '''
+				}
+			}
+		}
   }
 }
