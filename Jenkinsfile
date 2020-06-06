@@ -35,6 +35,12 @@ pipeline {
 				}
 			}
 		}
-
+		stage('Add Jenkins to Docker Users') {
+			steps {
+			  sh '''
+				  sudo usermod -a -G docker jenkins
+			  '''
+			}
+		}
 	}
 }
