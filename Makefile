@@ -6,6 +6,8 @@ setup-brew:
 setup-docker:
 	# install docker on ubuntu-linux
 	./install_docker.sh
+	sudo groupadd docker
+	sudo usermod -aG docker ${USER}
 
 setup-Jenkins:
 	# install Jenkins
