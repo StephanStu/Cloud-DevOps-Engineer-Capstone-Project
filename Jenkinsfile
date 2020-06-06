@@ -10,7 +10,7 @@ pipeline {
 		}
 		stage('Verifying the Artifacts of the Website') {
 		  steps {
-			  sh 'tidy -q -e *.html'
+			  sh '/home/linuxbrew/.linuxbrew/bin/tidy -q -e *.html'
 			}
 		}
     stage('Verifying the Dockerfile') {
