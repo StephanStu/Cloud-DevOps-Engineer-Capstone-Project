@@ -87,6 +87,7 @@ Then, `$ unzip awscliv2.zip` and `$ sudo ./aws/install`. The installation can be
 `$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp`
 
 Move the extracted binary, `$ sudo mv /tmp/eksctl /usr/local/bin` and test that installation was successful by `$ eksctl version`. These guidelines have been taken from [this source](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html).
+
 **Note**: The GitTag version should be at least 0.20.0.
 
 ### Install Brew - A package management system
