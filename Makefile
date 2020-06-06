@@ -19,6 +19,11 @@ install:
 	brew install hadolint
 	# Install tidy, the html-linter
 	brew install tidy-html5
+	# Install kubectl
+	curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.17.4/bin/linux/amd64/kubectl
+	chmod +x ./kubectl
+	sudo mv ./kubectl /usr/local/bin/kubectl
+	kubectl version --client
 	# Return an OK
 	echo "Toolchain is installed."
 
@@ -31,6 +36,8 @@ test:
 	tidy -v
 	# Check, that hadolint is available
 	hadolint -v
+	# Check, that kuebctl is available
+	kubectl version --client
 	# Return an OK
 	echo "Toolchain is ready."
 
