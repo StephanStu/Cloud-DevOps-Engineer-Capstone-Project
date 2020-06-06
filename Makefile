@@ -17,9 +17,10 @@ setup-kubectl:
 	sudo apt-get install -y kubectl
 
 setup-aws-cli:
+	sudo apt install unzip
 	$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-	unzip awscliv2.zip
-	sudo ./aws/install
+  unzip awscliv2.zip
+  sudo ./aws/install
 
 setup-eksctl:
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
