@@ -38,6 +38,10 @@ test:
 	hadolint -v
 	# Check, that kuebctl is available
 	kubectl version --client
+	# Check, that aws cli is available
+	aws --version
+	# Check, that eksctl is available
+	eksctl version
 	# Return an OK
 	echo "Toolchain is ready."
 
