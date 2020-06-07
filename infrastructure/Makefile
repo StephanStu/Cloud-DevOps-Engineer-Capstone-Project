@@ -12,16 +12,10 @@ aws-command-line-tools:
 	chmod u+x install_aws_cli_and_eksctl.sh
 	./install_aws_cli_and_eksctl.sh
 
-# Instructions for creation of the Kubernetes-Cluster in AWS::EKS. This is intended
-# to be executed on the server after installing the aws cli and configuring
-# credentials with $ aws configure.
-kubernetes-cluster:
-	chmod u+x create_kubernetes_cluster.sh
-	./create_kubernetes_cluster.sh
-
 # Instructions for creation of the Jenkins-Server. This is intended
 # to be executed on the server after installing the aws cli and configuring
-# credentials with $ aws configure.
+# credentials with $ aws configure. This section has two parts, the tools and
+# Jenkins.
 tools:
 	chmod u+x install_tools.sh
 	./install_tools.sh
@@ -29,6 +23,12 @@ tools:
 jenkins-server:
 	chmod u+x install_jenkins.sh
 	./install_jenkins.sh
+# Instructions for creation of the Kubernetes-Cluster in AWS::EKS. This is intended
+# to be executed on the server after installing the aws cli and configuring
+# credentials with $ aws configure.
+kubernetes-cluster:
+	chmod u+x create_kubernetes_cluster.sh
+	./create_kubernetes_cluster.sh
 
 # Instructions to update kubectl with the cluster to be controlled on the server.
 update-kubernetes-configuration:
