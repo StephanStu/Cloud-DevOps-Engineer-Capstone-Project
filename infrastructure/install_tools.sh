@@ -1,8 +1,5 @@
 # Install brew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-# Missing commands here...
-echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> /home/ubuntu/.profile
-eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 # Install docker on ubuntu-linux
 chmod u+x install_docker.sh
 ./install_docker.sh
@@ -28,3 +25,6 @@ sudo apt install pylint
 # Install requirmeents of application
 pip install --upgrade pip &&\
   pip install -r requirements.txt
+# Add brew to shell:
+echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> /home/ubuntu/.profile
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
