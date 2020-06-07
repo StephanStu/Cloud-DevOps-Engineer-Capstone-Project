@@ -42,7 +42,7 @@ test-infrastructure:
 	# Check, if brew is available
 	brew -v
 	# Check, that pip is available
-	pip3 --version
+	pip --version
 	# Check, that hadolint is available
 	hadolint -v
 	# Check, that kuebctl is available
