@@ -1,0 +1,60 @@
+Description:
+  This script deploys the infrastructure needed for the continuous integration / continuous deployment pipline utilizing AWS' container services.
+Parameters:
+  RepositoryName:
+    Description: A name for the container repository in AWS' ECR.
+    Type: String
+  UdacityCapstoneDeveloperIP:
+    Description: IP of the Cloud DevOps Engnieer in CIDR-Notation
+    Type: String
+    Default: 02.006.004.116/32
+Resources:
+  UdacityCapstoneElasticContainerRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Ref RepositoryName
+      RepositoryPolicyText:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: AllowPushPull
+            Effect: Allow
+            Principal:
+              AWS:
+                - "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"
+            Action:
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
+  UdacityCapstoneSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow connections from specified CIDR ranges, i.e. my Mac to e.g. configure Jenkins
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 8000
+        ToPort: 8080
+        CidrIp: !Ref UdacityCapstoneDeveloperIP
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: !Ref UdacityCapstoneDeveloperIP
+  UdacityCapstoneServer4Jenkins:
+    Type: AWS::EC2::Instance
+    Properties:
+      SecurityGroups:
+      - !Ref UdacityCapstoneSecurityGroup
+      ImageId: ami-0e342d72b12109f91
+      InstanceType: t2.medium
+      # Enter the name of your Key-Pair here:
+      KeyName: UdacityCapstoneKeyPair
+Outputs:
+  UdacityCapstoneJenkinsServerURL:
+    Description: The URL where you can access Jenkins (after it is setup!)
+    Value: !Join [ "", [ "http://", !GetAtt UdacityCapstoneServer4Jenkins.PublicDnsName, ":8080" ] ]
+    Export:
+      Name: UdacityCapstoneJenkinsServerURL

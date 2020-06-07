@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "RepositoryName",
+    "ParameterValue": "udacity_capstone_project_repository"
+  },
+  {
+    "ParameterKey": "UdacityCapstoneDeveloperIP",
+    "ParameterValue": "62.216.204.116/32"
+  }
+]
