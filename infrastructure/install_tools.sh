@@ -28,3 +28,5 @@ pip install --upgrade pip &&\
 # Add brew to shell:
 echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> /home/ubuntu/.profile
 eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+# Add to path /home/ubuntu/.local/bin, s.t. flask and other python adds run
+export PATH="/home/ubuntu/.local/bin:$PATH"
