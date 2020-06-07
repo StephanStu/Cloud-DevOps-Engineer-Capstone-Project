@@ -22,9 +22,13 @@ kubernetes-cluster:
 # Instructions for creation of the Jenkins-Server. This is intended
 # to be executed on the server after installing the aws cli and configuring
 # credentials with $ aws configure.
+tools:
+	chmod u+x install_tools.sh
+	./install_tools.sh
+
 jenkins-server:
-	chmod u+x install_jenkins_server.sh
-	./install_jenkins_server.sh
+	chmod u+x install_jenkins.sh
+	./install_jenkins.sh
 
 # Instructions to update kubectl with the cluster to be controlled on the server.
 update-kubernetes-configuration:
@@ -36,7 +40,9 @@ test-infrastructure:
 	# Check, if Docker is installed
 	docker --version
 	# Check, if brew is available
-	brew help
+	brew -v
+	# Check, that pip is available
+	pip3 --version
 	# Check, that hadolint is available
 	hadolint -v
 	# Check, that kuebctl is available
@@ -45,3 +51,5 @@ test-infrastructure:
 	aws --version
 	# Check, that eksctl is available
 	eksctl version
+
+test-and-update: test-infrastructure update-kubernetes-configuration
