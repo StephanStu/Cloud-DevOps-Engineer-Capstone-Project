@@ -24,7 +24,7 @@ sudo apt-get install python3-venv
 sudo apt install pylint
 # Create the virtual environment and source it
 python3 -m venv .devops
-source ~/.devops/bin/activate
+source .devops/bin/activate
 # Install requirements of application
 pip install --upgrade pip &&\
   pip install -r requirements.txt
