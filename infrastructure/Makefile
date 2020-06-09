@@ -1,4 +1,4 @@
-## The Makefile includes instructions on environment setup and lint tests
+## The Makefile includes instructions on infrastructure setup:
 # Instructions for creation of the infrastructure in AWS::EC2, e.g. the server
 # for Jenkins and the SecurityGroup.
 infrastructure:
