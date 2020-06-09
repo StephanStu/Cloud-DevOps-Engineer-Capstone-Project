@@ -11,7 +11,8 @@ lint:
 	# $ source infrastructure/.devops/bin/activate
 	# (deactivate with $ deactivate)
 	# Then, install requirements of application
-	pip install --upgrade pip && pip install -r ./infrastructure/requirements.txt
+	pip install --upgrade pip &&\
+		pip install -r requirements.txt
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles
 	hadolint Dockerfile
