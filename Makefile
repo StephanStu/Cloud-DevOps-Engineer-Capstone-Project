@@ -7,8 +7,10 @@ test:
 
 # Instructions for linting the artficacts
 lint:
-	# source the virtual environment
-	source infrastructure/.devops/bin/activate
+	# Source the virtual environment before by
+	# $ source infrastructure/.devops/bin/activate
+	# Then, install requirements of application
+	pip install --upgrade pip && pip install -r ./infrastructure/requirements.txt
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles
 	hadolint Dockerfile
