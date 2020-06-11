@@ -21,5 +21,17 @@ pipeline {
 								 sh './build_docker_image.sh'
 						 }
 				 }
+				 stage('Test the image') {
+				 		 steps{
+						 		 sh 'echo "Include some regression tests on the host here."'
+								 sh 'echo "Assume that tests have passed..."'
+						 }
+				 }
+				 stage('Upload the image') {
+				 		 steps{
+						 		 sh 'upload_docker_image.sh'
+								 sh './upload_docker_image.sh'
+						 }
+				 }
 		 }
 }
