@@ -23,4 +23,7 @@ lint:
 	# Remove check W1309 to satisfy requirements, code is rated 10 of 10 then.
 	pylint --disable=R,C,W1203,W1309 app.py
 
+remove-images:
+	sh 'docker rmi $(docker images -a -q) --force'
+
 all: lint test

@@ -29,8 +29,12 @@ pipeline {
 				 }
 				 stage('Upload the image') {
 				 		 steps{
-						     sh 'echo $DOCKER_USERNAME'
-								 sh 'docker rmi $(docker images -a -q) --force'
+						 		 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+								   sh '''
+									   docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+									   docker push stephanstu/predictor
+								   '''
+								 }
 						 }
 				 }
 		 }
