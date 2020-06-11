@@ -1,14 +1,16 @@
 pipeline {
 		 agent any
 		 stages {
-				 stage('Setup a virtual environment') {
+				 stage('Install requirements') {
 						 steps {
 								 sh 'make setup'
+								 sh 'source .devops/bin/activate'
+								 sh 'make install'
 						 }
 				 }
-				 stage('Install the requirements') {
+				 stage('Next') {
 						 steps {
-								 sh 'source .devops/bin/activate'
+								 sh 'echo "Hello"'
 							}
 				 }
 		 }
