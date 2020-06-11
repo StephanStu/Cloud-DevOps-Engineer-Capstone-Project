@@ -17,3 +17,6 @@ sudo systemctl start jenkins
 sudo systemctl enable jenkins
 # check status of jenkins and finish
 sudo systemctl status jenkins
+#The default shell that Jenkins uses is /bin/sh - this is configurable
+# in Manage Jenkins -> Configure System -> Shell -> Shell executable.
+# Set this variable to /bin/bash such that 'source' works!
