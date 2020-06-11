@@ -48,10 +48,12 @@ pipeline {
 				 }
 				 stage('Purge the test-environment') {
 				 		 steps{
-								 sh 'kubectl delete service test-loadbalancer'
-								 sh 'kubectl delete pod test'
-								 sh 'kubectl get pods'
-								 sh 'kubectl get service'
+						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
+								 		sh 'kubectl delete service test-loadbalancer'
+								 		sh 'kubectl delete pod test'
+								 		sh 'kubectl get pods'
+								 		sh 'kubectl get service'
+								  }
 						 }
 				 }
 				 stage('Deploy for testing') {
