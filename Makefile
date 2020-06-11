@@ -2,7 +2,7 @@
 # Instructions for testing the microservice
 setup:
 	# Create python virtualenv & source it with source ~/.devops/bin/activate
-	python3 -m venv .devops
+	python3 -m venv ~/.devops
 
 install:
 	# This should be run from inside a virtualenv
