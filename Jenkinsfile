@@ -30,9 +30,6 @@ pipeline {
 				 stage('Upload the image') {
 				 		 steps{
 						     sh '$DOCKER_USERNAME'
-						 		 sh 'chmod u+x upload_docker_image.sh'
-								 sh './upload_docker_image.sh'
-								 sh 'docker rmi $(docker images -a -q) --force'
 						 }
 				 }
 		 }
