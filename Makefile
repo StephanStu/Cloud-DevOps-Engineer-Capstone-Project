@@ -23,12 +23,14 @@ lint:
 	# Remove check W1309 to satisfy requirements, code is rated 10 of 10 then.
 	pylint --disable=R,C,W1203,W1309 app.py
 
+# Instructions for building the docker image
 build:
 	# Building the image
 	docker build -t stephanstu/predictor .
 	# List all images on this host
 	docker image ls
 
+# Instructions for removing the (old) images from the host
 remove:
 	# Remove all images on the host (to save disc space...)
 	sh 'docker rmi $(docker images -a -q) --force'
