@@ -12,14 +12,15 @@ pipeline {
 		  steps {
 			  sh '''
 				  source ~/.devops/bin/activate
-				  which python
+					pip install --upgrade pip &&\
+						pip install -r requirements.txt
 			  '''
 			}
 		}
     stage('Verifying the Dockerfile') {
 		  steps {
 			  sh '''
-				  source ~/.devops/bin/activate
+				  /home/linuxbrew/.linuxbrew/bin/hadolint Dockerfile
 				'''
 			}
 		}
