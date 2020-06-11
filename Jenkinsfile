@@ -3,8 +3,7 @@ pipeline {
 		 stages {
 				 stage('Install requirements') {
 						 steps {
-								 sh 'make setup'
-								 sh 'source .devops/bin/activate'
+								 sh 'python3 -m venv .devops && source .devops/bin/activate'
 								 sh 'make install'
 						 }
 				 }
