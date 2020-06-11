@@ -4,7 +4,7 @@ pipeline {
 				 stage('Install requirements') {
 						 steps {
 								 sh 'python3 -m venv .devops'
-								 sh 'ls -a'
+								 sh 'source .devops/bin/activate'
 						 }
 				 }
 				 stage('Next') {
