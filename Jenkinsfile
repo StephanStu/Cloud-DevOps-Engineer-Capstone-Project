@@ -11,7 +11,8 @@ pipeline {
     stage('Verifying the Dockerfile') {
 		  steps {
 			  sh '''
-				  source infrastructure/.devops/bin/activate
+				  python3 -m venv .devops
+				  source /.devops/bin/activate
 					make lint
 				'''
 			}
