@@ -50,7 +50,7 @@ pipeline {
 				 		 steps{
 						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
 										sh '''
-											kubectl run predictor  --replicas=1 --labels='app=predictor' --image=stephanstu/predictor --port=80
+											kubectl run test  --replicas=1 --labels='app=test' --image=stephanstu/predictor --port=80
 											kubectl get pods
 											kubectl create -f loadbalancer_for_test.yaml
 											kubectl get nodes
