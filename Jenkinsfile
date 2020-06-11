@@ -20,7 +20,7 @@ pipeline {
 						 		 sh 'make build'
 						 }
 				 }
-				 stage('Test the image') {
+				 stage('Run functional tests on the host') {
 				 		 steps{
 						 		 sh 'echo "Include some regression tests on the host here."'
 								 sh 'echo "Assume that tests have passed..."'
