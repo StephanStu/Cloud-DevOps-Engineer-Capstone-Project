@@ -1,0 +1,23 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"loadbalancer-for-deployed-app",
+      "labels":{
+         "app":"loadbalancer-for-deployed-app"
+      }
+   },
+   "spec":{
+      "ports": [
+         {
+           "protocol": "TCP",
+           "port":8000,
+           "targetPort":80
+         }
+      ],
+      "selector":{
+         "app":"test"
+      },
+      "type": "LoadBalancer"
+   }
+}
