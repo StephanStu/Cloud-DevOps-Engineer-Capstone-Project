@@ -1,47 +1,13 @@
 pipeline {
-	agent any
-	stages {
-	  stage('Setup the virtual environment') {
-		  steps {
-			  sh '''
-				  python3 -m venv ~/.devops
-			  '''
-			}
-		}
-		stage('Install requirements') {
-		  steps {
-			  sh '''
-				  source ~/.devops/bin/activate
-					deactivate
-			  '''
-			}
-		}
-    stage('Verifying the Dockerfile') {
-		  steps {
-			  sh '''
-				  /home/linuxbrew/.linuxbrew/bin/hadolint Dockerfile
-				'''
-			}
-		}
-    stage('Building the Docker-Image') {
-		  steps {
-        sh '''
-          chmod u+x build_docker_image.sh
-			    ./build_docker_image.sh
-        '''
-			}
-		}
-		stage('Push the Docker-Image to Elastic Container Registry') {
-		  steps {
-        sh '''
-				  echo "UPLOAD GOES HERE"
-        '''
-			}
-		}
-		stage('Run Load Tests, Functional Tests,...') {
-		  steps {
-				  input "Approve that all tests outputs are OK by hitting ENTER."
+				environment{
+				app = "predictor"
 				}
-		}
-  }
+				agent any
+				stages {
+					stage('Setup a virtual environment') {
+							steps {
+							sh 'make setup'
+							}
+					}
+				}
 }
