@@ -1,1 +1,1 @@
-aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectCluster
+aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectKubernetesCluster

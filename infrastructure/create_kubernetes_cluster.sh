@@ -1,1 +1,1 @@
-eksctl create cluster --name UdacityCapstoneProjectCluster --version 1.13 --nodegroup-name standard-workers --node-type t2.micro --nodes 2 --nodes-min 1 --nodes-max 3 --node-ami auto --region eu-central-1 --zones eu-central-1a --zones eu-central-1b
+eksctl create cluster --name UdacityCapstoneProjectKubernetesCluster --version 1.13 --nodegroup-name standard-workers --node-type t2.micro --nodes 2 --nodes-min 1 --nodes-max 3 --node-ami auto --region eu-central-1 --zones eu-central-1a --zones eu-central-1b

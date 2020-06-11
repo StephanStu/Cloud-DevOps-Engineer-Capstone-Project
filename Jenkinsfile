@@ -40,8 +40,8 @@ pipeline {
 				 		 steps{
 						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
 										sh '''
-											aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectCluster
-											kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectCluster
+											aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectKubernetesCluster
+											kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectKubernetesCluster
 										'''
 									}
 						 }
