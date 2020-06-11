@@ -13,7 +13,7 @@ pipeline {
 							steps {
 							sh """
 								source ~/.devops/bin/activate
-								make install
+								pwd
 							"""
 							}
 					}
