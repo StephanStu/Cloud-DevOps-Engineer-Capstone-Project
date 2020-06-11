@@ -33,6 +33,6 @@ build:
 # Instructions for removing the (old) images from the host
 remove:
 	# Remove all images on the host (to save disc space...)
-	sh 'docker rmi $(docker images -a -q) --force'
+	docker rmi $(docker images -a -q) --force
 
 all: lint test build
