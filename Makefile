@@ -1,8 +1,7 @@
 ## The Makefile includes instructions on lint tests
 # Instructions for testing the microservice
 setup:
-	# Create python virtualenv & source it
-	# source ~/.devops/bin/activate
+	# Create python virtualenv & source it with source ~/.devops/bin/activate
 	python3 -m venv ~/.devops
 
 install:

@@ -9,5 +9,13 @@ pipeline {
 							sh 'make setup'
 							}
 					}
+					stage('Install the requirements') {
+							steps {
+							sh """
+								source ~/.devops/bin/activate
+								make install
+							"""
+							}
+					}
 				}
 }
