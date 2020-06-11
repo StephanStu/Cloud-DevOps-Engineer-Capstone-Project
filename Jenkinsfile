@@ -8,9 +8,9 @@ pipeline {
 								 sh 'make install'
 						 }
 				 }
-				 stage('Next') {
+				 stage('Lint artifacts') {
 						 steps {
-								 sh 'echo "Hello"'
+								 sh 'make lint'
 							}
 				 }
 		 }
