@@ -1,16 +1,15 @@
 pipeline {
 		 agent any
 		 stages {
-				 stage('Install requirements') {
+				 stage('Create a virtual environment') {
 						 steps {
 								 sh 'make setup'
-								 sh 'source ~/.devops/bin/activate'
-								 sh 'make install'
 						 }
 				 }
 				 stage('Lint artifacts') {
 						 steps {
 						 		 sh 'source ~/.devops/bin/activate'
+								 sh 'make install'
 								 sh 'make lint'
 							}
 				 }
