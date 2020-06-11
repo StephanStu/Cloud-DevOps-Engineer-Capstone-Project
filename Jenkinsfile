@@ -8,8 +8,7 @@ pipeline {
 				 }
 				 stage('Install the requirements') {
 						 steps {
-								 sh 'source ~/.devops/bin/activate'
-								 sh 'deactivate'
+								 sh 'source .devops/bin/activate'
 							}
 				 }
 		 }
