@@ -8,15 +8,11 @@ pipeline {
 			  '''
 			}
 		}
-		stage('Verifying the Artifacts of the Website') {
-		  steps {
-			  sh 'tidy -q -e *.html'
-			}
-		}
     stage('Verifying the Dockerfile') {
 		  steps {
 			  sh '''
-			    /home/linuxbrew/.linuxbrew/bin/hadolint Dockerfile
+				  source infrastructure/.devops/bin/activate
+					make lint
 				'''
 			}
 		}
