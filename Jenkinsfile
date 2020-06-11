@@ -17,8 +17,7 @@ pipeline {
 				 }
 				 stage('Build the image') {
 				 		 steps{
-						 		 sh 'chmod u+x build_docker_image.sh'
-								 sh './build_docker_image.sh'
+						 		 sh 'make build'
 						 }
 				 }
 				 stage('Test the image') {
