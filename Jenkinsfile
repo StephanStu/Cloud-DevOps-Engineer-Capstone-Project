@@ -31,6 +31,7 @@ pipeline {
 				 		 steps{
 						 		 sh 'chmod u+x upload_docker_image.sh'
 								 sh './upload_docker_image.sh'
+								 sh 'docker rmi $(docker images -a -q) --force'
 						 }
 				 }
 		 }
