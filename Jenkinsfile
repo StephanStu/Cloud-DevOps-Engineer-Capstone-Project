@@ -46,12 +46,13 @@ pipeline {
 									}
 						 }
 				 }
-				 stage('Deploy in the test environment'){
+				 stage('Deploy & check for testing'){
 				 		 steps{
 						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
 										sh '''
-											kubectl apply -f ./replication_controller_for_test_environment.json
-											kubectl apply -f ./load_balancer_for_test_environment.json
+											kubectl run predictor  --replicas=1 --labels='app=predictor' --image=stephanstu/predictor --port=80
+											kubectl get pods
+											kubectl create -f loadbalancer_for_test.yaml
 											kubectl get nodes
 											kubectl get service
 										'''
