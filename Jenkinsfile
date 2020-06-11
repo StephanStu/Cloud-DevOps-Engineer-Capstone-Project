@@ -46,5 +46,17 @@ pipeline {
 									}
 						 }
 				 }
+				 stage('Deploy in the test environment'){
+				 		 steps{
+						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
+										sh '''
+											kubectl apply -f ./replication_controller_for_test_environment.json
+											kubectl apply -f ./load_balancer_for_test_environment.json
+											kubectl get nodes
+											kubectl get service
+										'''
+									}
+						 }
+				 }
 		 }
 }
