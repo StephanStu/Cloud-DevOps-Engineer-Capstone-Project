@@ -36,7 +36,7 @@ pipeline {
 								 }
 						 }
 				 }
-				 stage('Configure Kubernetes context') {
+				 stage('Configure Kubernetes') {
 				 		 steps{
 						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
 										sh '''

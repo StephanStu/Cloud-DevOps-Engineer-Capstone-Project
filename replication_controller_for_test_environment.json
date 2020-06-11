@@ -22,7 +22,7 @@
             "containers":[
                {
                   "name":"test",
-                  "image":"udacity_capstone_project_repository",
+                  "image":"stephanstu/predictor",
                   "ports":[
                      {
                         "name":"http-server",
