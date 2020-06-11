@@ -10,6 +10,7 @@ pipeline {
 				 }
 				 stage('Lint artifacts') {
 						 steps {
+						 		 sh 'source ~/.devops/bin/activate'
 								 sh 'make lint'
 							}
 				 }
