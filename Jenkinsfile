@@ -4,7 +4,7 @@ pipeline {
 	  stage('Setup the virtual environment') {
 		  steps {
 			  sh '''
-				  make setup
+				  python3 -m venv ~/.devops
 			  '''
 			}
 		}
@@ -12,7 +12,7 @@ pipeline {
 		  steps {
 			  sh '''
 				  source ~/.devops/bin/activate
-				  make install
+				  which python
 			  '''
 			}
 		}
@@ -20,7 +20,6 @@ pipeline {
 		  steps {
 			  sh '''
 				  source ~/.devops/bin/activate
-				  make lint
 				'''
 			}
 		}
