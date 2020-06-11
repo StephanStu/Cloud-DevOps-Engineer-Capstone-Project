@@ -1,18 +1,26 @@
 pipeline {
 	agent any
 	stages {
-	  stage('Publish Purpose') {
+	  stage('Setup the virtual environment') {
 		  steps {
 			  sh '''
-				  echo "Jenkins runs the Pipeline on the Kubernetes Cluster now..."
+				  make setup
+			  '''
+			}
+		}
+		stage('Install requirements') {
+		  steps {
+			  sh '''
+				  source ~/.devops/bin/activate
+				  make install
 			  '''
 			}
 		}
     stage('Verifying the Dockerfile') {
 		  steps {
 			  sh '''
-				  python3 -m venv .devops
-				  source .devops/bin/activate
+				  source ~/.devops/bin/activate
+				  make lint
 				'''
 			}
 		}

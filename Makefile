@@ -1,18 +1,20 @@
 ## The Makefile includes instructions on lint tests
 # Instructions for testing the microservice
-test:
-	# Additional, optional, tests could go here
-	#python -m pytest -vv --cov=myrepolib tests/*.py
-	#python -m pytest --nbval notebook.ipynb
+setup:
+	# Create python virtualenv & source it
+	# source ~/.devops/bin/activate
+	python3 -m venv ~/.devops
+
+install:
+	# This should be run from inside a virtualenv
+	pip install --upgrade pip &&\
+		pip install -r requirements.txt
 
 # Instructions for linting the artficacts
 lint:
 	# Source the virtual environment before by
 	# $ source infrastructure/.devops/bin/activate
 	# (deactivate with $ deactivate)
-	# Then, install requirements of application
-	pip install --upgrade pip &&\
-		pip install -r requirements.txt
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles
 	hadolint Dockerfile
