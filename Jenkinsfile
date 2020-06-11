@@ -46,18 +46,31 @@ pipeline {
 									}
 						 }
 				 }
-				 stage('Deploy & check for testing'){
+				 stage('Purge the test-environment') {
+				 		 steps{
+								 sh 'kubectl delete service test-loadbalancer'
+								 sh 'kubectl delete pod test'
+								 sh 'kubectl get pods'
+								 sh 'kubectl get service'
+						 }
+				 }
+				 stage('Deploy for testing') {
 				 		 steps{
 						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
 										sh '''
 											kubectl run test  --replicas=1 --labels='app=test' --image=stephanstu/predictor --port=80
-											kubectl get pods
 											kubectl create -f loadbalancer_for_test.yaml
 											kubectl get nodes
+											kubectl get pods
 											kubectl get service
 										'''
 									}
 						 }
 				 }
+				 stage('Run functional tests in target environment') {
+		 		  	 steps{
+		 				  	  input "Go to host; paste the URL of the loadbalancer in test_predicition.sh and run it. The expected result is 20.35373177134412."
+		 				 }
+		 		 }
 		 }
 }
