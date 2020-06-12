@@ -74,5 +74,18 @@ pipeline {
 		 				  	  input "Go to host; paste the URL of the loadbalancer in test_predicition.sh and run it. The expected result is 20.35373177134412."
 		 				 }
 		 		 }
+				 stage('Deploy in production'){
+				 		 steps{
+						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
+									  sh '''
+										  kubectl apply production  --replicas=1 --labels='app=production' --image=stephanstu/predictor --port=80
+											kubectl apply -f loadbalancer_for_production.yaml
+											kubectl get nodes
+											kubectl get pods
+											kubectl get service
+										'''
+									}
+						 }
+				 }
 		 }
 }
