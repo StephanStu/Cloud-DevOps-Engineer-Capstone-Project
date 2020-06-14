@@ -1,20 +1,32 @@
 # Udacity's Cloud-DevOps-Engineer Nanodegree Program: The Capstone-Project
-This repository contains my solution for the capstone-project of Udacity's Cloud DevOps Engineer Nanodegree Program.  For details of the program see [here](https://www.udacity.com/course/cloud-dev-ops-nanodegree--nd9991).
+This repository contains my solution for the capstone-project of Udacity's Cloud DevOps Engineer Nanodegree Program. For details of the program see [here](https://www.udacity.com/course/cloud-dev-ops-nanodegree--nd9991).
 In this project the skills & knowledge which were developed throughout the Cloud DevOps Nanodegree program are applied in practice. These include:
 
 * Working in AWS
 * Using Jenkins to implement Continuous Integration and Continuous Deployment
 * Building pipelines
-* Working with Ansible and CloudFormation to deploy clusters
-* Building Kubernetes clusters
+* Working with CloudFormation (Infrastructure-as-code) to spawn infrastructure & a Kubernetes cluster
+* Building Kubernetes nodes, pods and services in the cluster
 * Building Docker containers in pipelines
 
+As an application, a machine learning microservice has been chosen, that predicts house prices in the Boston-area. The microservice can be reached via a json-formatted call, an example is given in `test_prediction.sh`.
+
 ## Section I: Project Overview
-In this project the blue/green-deployment pattern is implemented in a cloud-native fashion with Jenkins and a set of services of Amazon Web Services. A static website is deployed in a web servers, which is a containerized application that runs in a Kubernetes Cluster.
+In this project the rolling-deployment pattern is implemented in a cloud-native fashion with Jenkins and a set of services of Amazon Web Services. A machine learning microservic is containerized inside a continuous integration & deployment pipeline.
+After running static code analysis (_linting_ of the python- and docker-artifacts), the docker-image must be build and pushed to the docker-hub.
+
+Two environments must be created, which must be equal: One environment serves for testing of the deployed application and the other one serves as a production environment which must be accessible all day and night by customers. In order to make sure, development errors do not sneak into production, any change to the application must be deployed & tested in the test-environment before being deployed in the production environment. Since the test- and the production-environment are equal, a validation in the test-environment gives the organization the necessary confidence to deploy in the production environment just after testing has finished with _OK-results_.  
 
 ## Section II: Results & Guideline to Build this Project
 This section wraps up the achievements of this project.
-The following section describe the details of the implementation of the blue/green-deployment pattern,
+### Setup of a Jenkins Server and Integration of Jenkins with DockerHub and Amazon Web Service's Kubernetes Solution
+
+### Setup of a Continuous Integration / Continuous Deployment Pipeline
+
+### Function Testing of a Machine Learning Microservice inside the Continuous Integration / Continuous Deployment Pipeline
+
+### Further Details of the Continuous Integration / Continuous Deployment Pipeline
+The following sections describe the details of the implementation of the deployment pattern,
 
 * Section III describes in detail how to spawn the infrastructure in Amazon Web Services using CloudFormation.
 * Section IV describes in detail how to setup the web server, the operates the pipeline
@@ -22,31 +34,19 @@ The following section describe the details of the implementation of the blue/gre
 * Section VI wraps up knowledge on Kubernetes, Docker and useful ways-of-working with Kubernetes.
 
 ## Section III: Spawn the Infrastructure using CloudFormation
-This section describes how to set up the infrastructure for the continuous integration / continuous deployment pipeline that this repository contains. The infrastructure is spawned using Amazon Web Service's CloudFormation, a language for deploying _infrastructure-as-code_. One of the many advantages of CloudFormation is, that the infrastructure can be deleted and updated from command line, so it is easy to keep track of a large number of entities in an account.
+This section describes how to set up the infrastructure for the continuous integration / continuous deployment pipeline that this repository contains. The infrastructure is spawned using Amazon Web Service's CloudFormation, a language for deploying _infrastructure-as-code_. One of the many advantages of CloudFormation is, that the infrastructure can be deleted and updated from command line, so it is easy to keep track of a large number of entities in an account. All files needed to setup the infrastructure are kept in `/infrastructure`, e.g. the `Makefile` that installs all necessary tools.
+The _stack_ in Amazon Web Service is created by `$ cd infrastructure` on your own machine and running
 
-
-The _stack_ in Amazon Web Service is created by
 `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
+
 After running the CloudFormation script with parameters, the stack appears with all resources and outputs as displayed in the figure below.
 
 ![spawn_infrastructure.png](doc/spawn_infrastructure.png)
 
-To create the Kubernetes Cluster in Amazon Web Service, an additional command line interface is used, the _eksctl_ API. The installation is outlined below. To spawn the Kubernetes Cluster, run `$ chmod u+x run_docker_image_on_local_host.sh` to grant permission to execute followed by
-
-`$ create_eks_cluster.sh `
-
-A successful creation of the cluster and the nodes will be visible in CloudFormation as displayed in the figure below.
-
-![spawn_eks_cluster](doc/spawn_eks_cluster.png)
-
 **Note**: When the stack is deleted, all it's entities are removed as well. If the entities are created manually, one has to keep track of destruction of all entities after the infrastructure is not longer needed.
 
-### Spawn a Repository in Elastic Container Registry
-As part of the stack, a repository is created in Amazon Web Service' Elastic Container Registry (ECR).
-The repository name is defined in _parameters.json_, by the variable `RepositoryName`.
-Note: Inside _infrastructure.yml_, a user has been hardcoded with rights to push and pull containers, see `- "arn:aws:iam::793553224113:user/UdacityCapstoneDeveloper"`. If you pull this GitHub-Repository and spawn the infrastructure, be sure to add and / or replace your users here.
-
 ### Spawn a Security Group
+This is done as part of running `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
 A firewall solution that performs one primary function is needed: Filter incoming and outgoing traffic from an EC2 instance. In Amazon Web Service this solution is called a _Security Group_. It accomplishes this filtering function at the TCP and IP layers, via their respective ports, and source/destination IP addresses. The spawned filter allows
 
 * outbound traffic to everyone.
@@ -54,15 +54,33 @@ A firewall solution that performs one primary function is needed: Filter incomin
 * inbound traffic via TCP on port 80 from one IP-Address - the IP-Address of the administrator / Cloud DevOps Engineer, who must configure Jenkins (to be provided in _parameters.json_ as , `UdacityCapstoneDeveloperIP`)
 
 ### Spawn a Web Server for Continuous Integration & Deployment
+This is done as part of runnig `$ ./create.sh UdacityCapstoneProject infrastructure.yml parameters.json`.
 A web server is needed to host Jenkins and run tools that implement the continuous integration- & deployment-pipeline. The web server is an instance of Amazon Web Service's EC2-Solutions with
 
-* machine image: Ubuntu Bionic-18.04-amd64 (ami-0e342d72b12109f91)
-* type: t2.micro
+* machine image: Ubuntu Bionic-18.04-amd64 (ami-0e342d72b12109f91, all tools work with Ubuntu Linux)
+* type: c3.large (additional memory compared to t2.micro is needed in order to build & keep docker images on the host)
 
 ### Spawn a Kubernetes Cluster
-A cluster is a set of nodes, that may be deployed on a number of Amazon EC2 instances. It is created prior to creation of _worker-nodes_.
+A Kubernetes Cluster is a set of nodes, that may be deployed on a number of Amazon EC2 instances. It is created prior to creation of _worker-nodes_. After the initial infrastructure (Web Server, Security Group) has been spawned, the next step is to spawn the cluster. To do so, _ssh into_ the web server, `$ git clone https://github.com/StephanStu/Cloud-DevOps-Engineer-Capstone-Project.git` to clone this repository locally and install the tool that sets up the continuous integration & deployment pipeline on the machine. To do this, `$ cd infrastructure` and run
+
+`$ sudo apt install make`
+
+in order to install _make_. This allows to execute the _Makefile_, `/infrastructure/Makefile`. To create the Kubernetes Cluster in Amazon Web Service, an additional command line interface is used, the _eksctl_ API. To do this, `$ cd infrastructure` and execute
+
+`$ make aws-command-line-tools`
+
+You are asked to configure credentials of the Amazon Web Service Command Line Interface. Use a user, that has sufficient permissions to access AWS::EC2 and AWS::EKS. To spawn the Kubernetes Cluster, change directory to `infrastructure` and execute
+
+`$ make kubernetes-cluster`
+
+A successful creation of the cluster and the nodes will be visible in CloudFormation as displayed in the figure below.
+
+![spawn_eks_cluster](doc/spawn_eks_cluster.png)
+
+**Note**: When the stack is deleted, all it's entities are removed as well. If the entities are created manually, one has to keep track of destruction of all entities after the infrastructure is not longer needed.
 
 ### Spawn a Kubernetes Nodegroup
+This is done as part of runnig `$ make kubernetes-cluster`.
 Worker machines in Kubernetes are called nodes. Nodes contain pods and pods contain the containerized applications - docker images. Amazon's implementation of Kubernetes lets worker nodes run in an account and connect to a cluster's control plane via the cluster API server endpoint. One or more worker nodes are deployed into a node group. A node group is one or more Amazon EC2 instances that are deployed in an Amazon EC2 Auto Scaling group.
 
 ## Section IV: Setup the Web Server for Continuous Integration & Deployment
