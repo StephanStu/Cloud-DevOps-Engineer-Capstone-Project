@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: test-controller
+  name: production-controller
 spec:
   replicas: 2
   selector:
-    app: test
+    app: production
   template:
     metadata:
-      name: test
+      name: production
       labels:
-        app: test
+        app: production
     spec:
       containers:
-      - name: test
+      - name: production
         image: stephanstu/predictor
         ports:
         - containerPort: 80
