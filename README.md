@@ -38,13 +38,13 @@ A continuous integration & deployment pipeline has been defined by the `Jenkinsf
 
 The steps of the continuous integration & deployment pipeline are:
 
-* Installing requirements of the microservice `app.py`
-* Linting of the artifacts of the microservice `app.py`
-* Building of a docker container image
-* Pushing the image to DockerHub
-* Deployment of the application in a test environment
-* Functional testing of the application in the test environment (this could be automated further and enhacned with load-tests)
-* Deployment of the application in the production environment after successful outcome of the test run has been confirmed
+* Installing requirements of the microservice `app.py`.
+* Linting of the artifacts of the microservice `app.py`.
+* Building of a docker container image.
+* Pushing the image to DockerHub.
+* Deployment of the application in a test environment.
+* Functional testing of the application in the test environment (this could be automated further and enhanced with load-tests).
+* Deployment of the application in the production environment after successful outcome of the test run has been confirmed.
 
 ### Function Testing of a Machine Learning Microservice inside the Continuous Integration / Continuous Deployment Pipeline
 Any change to the application must be deployed & tested in the test-environment before being deployed in the production environment.
@@ -58,7 +58,7 @@ This could be subject to further automation and enhancement, e.g. followed by lo
 The following sections describe the details of the implementation of the deployment pattern,
 
 * Section III describes in detail how to spawn the infrastructure in Amazon Web Services using CloudFormation.
-* Section IV describes in detail how to setup the web server, the operates the pipeline
+* Section IV describes in detail how to setup the web server, that operates the pipeline.
 * Section V describes the pipeline in detail.
 * Section VI wraps up knowledge on Kubernetes, Docker and useful ways-of-working with Kubernetes.
 
@@ -89,6 +89,10 @@ A web server is needed to host Jenkins and run tools that implement the continuo
 * machine image: Ubuntu Bionic-18.04-amd64 (ami-0e342d72b12109f91, all tools work with Ubuntu Linux)
 * type: c3.large (additional memory compared to t2.micro is needed in order to build & keep docker images on the host)
 
+After spawning the server and the worker-nodes of the Kubernetes Cluster, in the AWS::EC2-Management Console, machines can be observed as displayed in the figure below.
+
+![ec2_instances](doc/ec2_instances.png)
+
 ### Spawn a Kubernetes Cluster
 A Kubernetes Cluster is a set of nodes, that may be deployed on a number of Amazon EC2 instances. It is created prior to creation of _worker-nodes_. After the initial infrastructure (Web Server, Security Group) has been spawned, the next step is to spawn the cluster. To do so, _ssh into_ the web server, `$ git clone https://github.com/StephanStu/Cloud-DevOps-Engineer-Capstone-Project.git` to clone this repository locally and install the tool that sets up the continuous integration & deployment pipeline on the machine. To do this, `$ cd infrastructure` and run
 
@@ -110,7 +114,9 @@ A successful creation of the cluster and the nodes will be visible in CloudForma
 
 ### Spawn a Kubernetes Nodegroup
 This is done as part of runnig `$ make kubernetes-cluster`.
-Worker machines in Kubernetes are called nodes. Nodes contain pods and pods contain the containerized applications - docker images. Amazon's implementation of Kubernetes lets worker nodes run in an account and connect to a cluster's control plane via the cluster API server endpoint. One or more worker nodes are deployed into a node group. A node group is one or more Amazon EC2 instances that are deployed in an Amazon EC2 Auto Scaling group.
+Worker machines in Kubernetes are called nodes. Nodes contain pods and pods contain the containerized applications - docker images. Amazon's implementation of Kubernetes lets worker nodes run in an account and connect to a cluster's control plane via the cluster API server endpoint. One or more worker nodes are deployed into a node group. A node group is one or more Amazon EC2 instances that are deployed in an Amazon EC2 Auto Scaling group. A successful creation of the worker-nodes and the nodes will be visible in CloudFormation as displayed in the figure below.
+
+![spawn_eks_worker_nodes](doc/spawn_eks_worker_nodes.png)
 
 ## Section IV: Setup the Web Server for Continuous Integration & Deployment
 After the infrastructure has been spawned, the next step is to _ssh into_ the web server and install the tools that execute continuous integration & deployment on the machine. First,
