@@ -131,79 +131,68 @@ The _Makefile_ can be found in the root of this repository; the repository must 
 Then, cd into the created folder to and `$ ls` will display the _Makefile_.
 
 ### Install Amazon Web Service's Command Line Interface & Kubernetes Cluster Control
-Amazon Web Service's Command Line Interface is needed to access the infrastructure from the web server in an automatic fashion, e.g. to upload container images to the container repository provided by Amazon Web Service. To install Amazon Web Service's Command Line Interface,
+Amazon Web Service's Command Line Interface is needed to access the infrastructure from the web server in an automatic fashion, e.g. to upload container images to the container repository provided by Amazon Web Service. To install Amazon Web Service's Command Line Interface, cd into `infrastructure` and
 
-`$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"``
-
-
+`$ make aws-command-line-tools`
 
 ### Install Brew - A package management system
-Brew is package management system that is needed to deploy necessary tools on the machine. To install brew, enable execution of _install_brew.sh_,
+Brew is package management system that is needed to deploy necessary tools on the machine. To install brew, cd into `infrastructure` and
 
+`$ make tools`
 
-
-### Install Docker
-To install Docker, enable
+### Install GCC, Docker, PyLint, Hadolint, pip
+It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipeline requires to check Docker-Files and .html-files prior to their deployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, these _linters_ for Dockerfiles and python-files must be installed on the web server: _PyLint_, _Hadolint_ .
+_Docker_, and _pip_ are needed to operate the continuous integration & deployment pipeline as well. A successful execution of `$ make tools` will install these tools on the host.
 
 **Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
 
-### Install GCC, hadolint & pylint
-It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipeline requires to check Docker-Files and .html-files prior to their deployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, _linters_ for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
-
-
-
-
-
-
-### Configure Credentials of Amazon Web Service's Command Line Interface & Upload the Image to the Container Repository
-One goal of the pipeline is to keep track of healthy container images. Therefor, linted & tested images are kept in a container repository provided by Amazon Web Services, the Elastic Container Registry, that has been spawned as part of the infrastructure.
-To enable this, configure the credentials of the command line interface on the server locally with appropriate user credentials (access to ECR is needed) by,
-
-`$ aws configure`
-
-Enter access key and secret access key of a user with appropriate credentials (administrator rights always work, but this is in conflict with the _least privilege policy_ taught in the class).
-To upload container images to the container repository created as part of the stack in _infrastructure.yml_, run `$ chmod u+x upload_docker_to_ecr.sh` followd by
-
-`$ ./upload_docker_to_ecr.sh`
-
-The previously created docker image is now pushed into the container repository provided by Amazon Web Service (an alternative container repository is DockerHub, see the Knowledge section).
-
-![push_containers_to_ecr](doc/push_containers_to_ecr.png)
 
 ### Install & Configure Jenkins - The Continuous Integration / Continuous Deployment Tool
-Jenkins will be available on port 8080 of the web server. The URL can be found in the EC2-Management Console as shown in the figure below.
+Jenkins will be available on port 8080 of the web server. The URL can be found in the EC2-Management Console. To install Jenkins, cd into `infrastructure` and
 
-![get_jenkins_url_from_webserver.png](doc/get_jenkins_url_from_webserver.png)
+`$ make jenkins-server`
 
 
-#### Step 5b): _Sometimes_ packages are not (yet) valid and keys must be added manually
-This can be resolved shown in the figure below
-
-![manage_packages_before_install_jenkins](doc/manage_packages_before_install_jenkins.png)
-
-Run this command and replace the missing keys:
+#### Fixing the Missing Package Key
+_Sometimes_ packages are not (yet) valid and keys must be added manually. Run this command and replace the missing keys if execution of `$ make jenkins-server` stops:
 
 `$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <ENTER MISSING KEY HERE>`
-
-
 
 Make sure, that Jenkins is able to access docker by
 
 `$ sudo usermod -a -G docker jenkins`
 
-#### Step 9: Get initial password and unlock Jenkins
-Catch the initial password on the host and go to port 8080 of the server. Here, Jenkins waits to be unlocked. Use the password obtained at the host above and arrive at what is displayed in the figure below.
+#### Catch the Initial Password and Unlock Jenkins
+Catch the initial password on the host and go to port 8080 of the server. Here, Jenkins waits to be unlocked. Use the password obtained at the host above and configure Jenkins.
 
-![say_hello_to_jenkins](doc/say_hello_to_jenkins.png)
-
-#### Step 10: Install PlugIns
+#### Install PlugIns
 "Blue Ocean" and other required plugins need to be installed. Logged in as an admin, go to the top left, click 'Jenkins', then 'manage Jenkins', and select 'Manage Plugins'.
 Use the "Available" tab, filter by "Blue Ocean," select the first option ("BlueOcean aggregator") and install without a restart. Filter once again for "pipeline-aws" and install, this time selecting "Download now and install after restart."
 One the host, run
 
 `$ sudo systemctl restart jenkins`
 
- An "Open Blue Ocean" link should show up in the sidebar. Click it, and it will take you to the "Blue Ocean" screen, where projects will be managed.
+An "Open Blue Ocean" link should show up in the sidebar. Click it, and it will take you to the "Blue Ocean" screen, where projects will be managed.
+
+#### Configure Credentials
+Jenkins needs credentials to access Amazon Web Service and the DockerHub. These can be added in the _credentials_-section as displayed in the figure below.
+
+![required_credentials_in_jenkins](doc/required_credentials_in_jenkins.png)
+
+The credentials of Amazon Web Service are added as pre-defined in Jenkins.
+
+To add credentials for DockerHub, [this](https://www.jenkins.io/doc/pipeline/steps/credentials-binding/) solution is used: The Credentials Binding Plugin. This is reflected in the Jenkinsfile inside stage _Upload the image_,
+
+`steps{
+    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+      sh '''
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker push stephanstu/predictor
+      '''
+    }
+}`
+
+The variables `$DOCKER_USERNAME` and `$DOCKER_PASSWORD` are configured in Jenkins and not visible to the outside world.
 
 ## Section V: The Continuous Integration / Continuous Deployment Pipeline
 This section describes the individual steps of the continuous integration / continuous deployment pipeline for machine learning microservice. Jenkins operates from the root directory of this repository and is controlled by the `Jenkinsfile`. A large part of the commands of the `Jenkinsfile` are swapped out to the `Makefile` because it might be necessary to run these manually from the server during maintenance of the pipeline.
@@ -266,10 +255,6 @@ A successful completion of this stage looks like displayed in the figure below.
 
 Since the test environment and the production environment are equal, there is no configuration drift and the organization can deploy to production immediatley after successful testing in the test environment.
 
-
-
-
-
 ## Section VII: Knowledge
 This section wraps up useful knowledge that is needed in the context of cloud-native development operations.
 
@@ -282,13 +267,12 @@ Docker-Containers can be considered as single-purpose virtual machines that can 
 * To list running containers: `$ docker container ls`
 * To stop a container running: `$ docker container stop [ID-of-container]`
 
-### DockerHub: An Alternative Container Repository: _upload docker to dockerhub.sh_
-For those, who do not work inside Amazon Webs Service and use their local, native distribution of Kubernetes, there is an alternative to managing Docker-Images - the [DockerHub](https://hub.docker.com/). To upload an image, you have to register in DockerHub. Then,
-this file must be given permission to run (run `$ chmod u+x upload_docker_to_dockerhub.sh` first). The docker image is uploaded to DockerHub by
-
-`$ ./upload_docker_to_dockerhub.sh`
-
+### DockerHub: A Container Repository: _upload docker to dockerhub.sh_
+For those, who do not work inside Amazon Webs Service and use the local container repository, ECR, there is an alternative to managing Docker-Images - the [DockerHub](https://hub.docker.com/). To upload an image, you have to register in DockerHub.
 After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
+
+* Login from command line: `docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD`
+* Push images to the DockerHub: `docker push <image-path>`
 
 ### GitHub
 When working with continuous integration & deployment Pipelines and GitHub as configuration management tool, one must be able to create access tokens for tools to operate on the repositorys. To generate these, visit
@@ -303,11 +287,7 @@ After installation of Jenkins a few more commands are needed to manage the pipel
 * Add Jenkins to docker users: `$ sudo usermod -a -G docker jenkins`
 
 ### Kubernetes
-Kubernetes is a free & open-source container-orchestration system for automating application deployment, scaling, and management initially designed by Google (see [here](https://en.wikipedia.org/wiki/Kubernetes)). It aims to provide a platform for automating deployment, scaling, and operations of application containers across clusters of hosts, as illustrated by the following image (taken from [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/)),
-
-![cluster](doc/cluster.svg)
-
-Containers usually means Docker-Images but a range of container tools is supported. Many cloud services offer a Kubernetes-based platform or infrastructure as a service (PaaS or IaaS) on which Kubernetes can be deployed as a platform-providing service. Many vendors also provide their own branded Kubernetes distributions, such as Amazon Web Service's [Elastic Kubernetes Services](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html).
+Kubernetes is a free & open-source container-orchestration system for automating application deployment, scaling, and management initially designed by Google (see [here](https://en.wikipedia.org/wiki/Kubernetes)). It aims to provide a platform for automating deployment, scaling, and operations of application containers across clusters of hosts (see [here](https://kubernetes.io/de/docs/tutorials/kubernetes-basics/explore/explore-intro/) for more details & tutorials). Containers usually means Docker-Images but a range of container tools is supported. Many cloud services offer a Kubernetes-based platform or infrastructure as a service (PaaS or IaaS) on which Kubernetes can be deployed as a platform-providing service. Many vendors also provide their own branded Kubernetes distributions, such as Amazon Web Service's [Elastic Kubernetes Services](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html).
 
 #### Infrastructure-as-Code in Kubernetes: useful Commands
 
