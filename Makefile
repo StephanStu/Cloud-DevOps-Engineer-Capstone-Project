@@ -43,7 +43,7 @@ deploy-test:
 	#kubectl run test  --replicas=1 --labels='app=test' --image=stephanstu/predictor --port=80
 	kubectl apply -f controller_for_test.yaml
 	kubectl describe replicationcontrollers
-	kubectl create -f loadbalancer_for_test.yaml
+	kubectl apply -f loadbalancer_for_test.yaml
 	kubectl describe service
 	kubectl get nodes
 	kubectl get pods
@@ -61,7 +61,7 @@ deploy-production:
 	#kubectl run production  --replicas=1 --labels='app=production' --image=stephanstu/predictor --port=80
 	kubectl apply -f controller_for_production.yaml
 	kubectl describe replicationcontrollers
-	kubectl create -f loadbalancer_for_production.yaml
+	kubectl apply -f loadbalancer_for_production.yaml
 	kubectl describe service
 	kubectl get nodes
 	kubectl get pods
