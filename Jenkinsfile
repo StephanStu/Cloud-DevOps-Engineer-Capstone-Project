@@ -47,7 +47,7 @@ pipeline {
 		 		  	 steps{
 						     sh 'echo "The machine learning application is called at the URL of the load-balancer:"'
 		 				  	 sh 'chmod u+x test_prediction.sh'
-								 sh './ test_prediction.sh'
+								 sh './test_prediction.sh'
 								 sh 'echo "If this step fails: Fix the URL of the load-balancer in test_prediction.sh!"'
 								 input "Verify that the result is 20.35373177134412."
 		 				 }
