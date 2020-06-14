@@ -230,9 +230,11 @@ A successful completion of this stage looks like displayed in the figure below.
 
 ![pipeline_step_3_success](doc/pipeline_step_3_success.png)
 
-
 ### Step 4: _Upload the image_
-Jenkins uploads the image to the DockerHub using my credentials.
+Jenkins uploads the image to the DockerHub using my credentials. In DockerHub, a push can be noticed as displayed in the figure below
+
+![predictor_in_dockerhub](doc/predictor_in_dockerhub.png)
+
 A successful completion of this stage looks like displayed in the figure below.
 
 ![pipeline_step_4_success](doc/pipeline_step_4_success.png)
@@ -287,8 +289,6 @@ this file must be given permission to run (run `$ chmod u+x upload_docker_to_doc
 `$ ./upload_docker_to_dockerhub.sh`
 
 After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
-
-![repository_in_dockerhub](doc/repository_in_dockerhub.png)
 
 ### GitHub
 When working with continuous integration & deployment Pipelines and GitHub as configuration management tool, one must be able to create access tokens for tools to operate on the repositorys. To generate these, visit
