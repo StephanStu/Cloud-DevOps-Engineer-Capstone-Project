@@ -34,7 +34,7 @@ Jenkins has been configured with necessary credentials to
 ### Setup of a Continuous Integration / Continuous Deployment Pipeline
 A continuous integration & deployment pipeline has been defined by the `Jenkinsfile` in the root of this repository. It implements the necessary requirements of this project.
 
-![server-url.png](pipeline_overview.png)
+![server-url.png](doc/pipeline_overview.png)
 
 The steps of the continuous integration & deployment pipeline are:
 
@@ -50,7 +50,7 @@ The steps of the continuous integration & deployment pipeline are:
 Any change to the application must be deployed & tested in the test-environment before being deployed in the production environment.
 This gives the organization the confidence, that the service can be provided to it's customers. In this project this is implemented by making a reference call to the machine learning microservice and comparing the outcome with an expected outcome.
 
-![confirm_test_results.png](confirm_test_results.png)
+![confirm_test_results.png](doc/confirm_test_results.png)
 
 This could be subject to further automation and enhancement, e.g. followed by load-testing.
 
