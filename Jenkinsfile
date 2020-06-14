@@ -36,24 +36,10 @@ pipeline {
 								 }
 						 }
 				 }
-				 stage('Configure Kubernetes') {
-				 		 steps{
-						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
-										sh '''
-											aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectKubernetesCluster
-											kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectKubernetesCluster
-										'''
-									}
-						 }
-				 }
 				 stage('Deploy for testing') {
 				 		 steps{
 						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
-										sh '''
-											kubectl get nodes
-											kubectl get pods
-											kubectl get service
-										'''
+										sh 'make deploy-test'
 									}
 						 }
 				 }
@@ -65,11 +51,7 @@ pipeline {
 				 stage('Deploy in production'){
 				 		 steps{
 						 			withAWS(region:'eu-central-1', credentials:'UdacityCapstoneDeveloper') {
-									  sh '''
-											kubectl get nodes
-											kubectl get pods
-											kubectl get service
-										'''
+									  sh 'make deploy-production'
 									}
 						 }
 				 }
