@@ -40,7 +40,6 @@ remove-image:
 deploy-test:
 	aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectKubernetesCluster
 	kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectKubernetesCluster
-	#kubectl run test  --replicas=1 --labels='app=test' --image=stephanstu/predictor --port=80
 	kubectl apply -f controller_for_test.yaml
 	kubectl describe replicationcontrollers
 	kubectl apply -f loadbalancer_for_test.yaml
@@ -58,7 +57,6 @@ deploy-test:
 deploy-production:
 	aws eks --region eu-central-1 update-kubeconfig --name UdacityCapstoneProjectKubernetesCluster
 	kubectl config use-context arn:aws:eks:eu-central-1:793553224113:cluster/UdacityCapstoneProjectKubernetesCluster
-	#kubectl run production  --replicas=1 --labels='app=production' --image=stephanstu/predictor --port=80
 	kubectl apply -f controller_for_production.yaml
 	kubectl describe replicationcontrollers
 	kubectl apply -f loadbalancer_for_production.yaml
@@ -66,12 +64,14 @@ deploy-production:
 	kubectl get nodes
 	kubectl get pods
 	kubectl get service
-# Instructions to purge the environment (test & production)
+# Instructions to purge the environment (test & production): This command cleans
+# the cluster by removing both instances of replicationcontroller and removing
+# both instances of loadbalancer.
 purge:
 	kubectl delete replicationcontrollers --all
 	kubectl delete service test-loadbalancer
 	kubectl delete service production-loadbalancer
 	kubectl get pods
 	kubectl get service
-
+# Instructions to run everything needed from linting to deployment in both environments
 all: lint test build deploy-test deploy-production
