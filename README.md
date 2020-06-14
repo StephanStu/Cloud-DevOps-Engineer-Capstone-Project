@@ -12,7 +12,7 @@ In this project the skills & knowledge which were developed throughout the Cloud
 As an application, a machine learning microservice has been chosen, that predicts house prices in the Boston-area. The microservice can be reached via a json-formatted call, an example is given in `test_prediction.sh`.
 
 ## Section I: Project Overview
-In this project the rolling-deployment pattern is implemented in a cloud-native fashion with Jenkins and a set of services of Amazon Web Services. A machine learning microservic is containerized inside a continuous integration & deployment pipeline.
+In this project the rolling-deployment pattern is implemented in a cloud-native fashion with Jenkins and a set of services of Amazon Web Services. A machine learning microservice is containerized inside a continuous integration & deployment pipeline.
 After running static code analysis (_linting_ of the python- and docker-artifacts), the docker-image must be build and pushed to the docker-hub.
 
 Two environments must be created, which must be equal: One environment serves for testing of the deployed application and the other one serves as a production environment which must be accessible all day and night by customers. In order to make sure, development errors do not sneak into production, any change to the application must be deployed & tested in the test-environment before being deployed in the production environment. Since the test- and the production-environment are equal, a validation in the test-environment gives the organization the necessary confidence to deploy in the production environment just after testing has finished with _OK-results_.  
@@ -46,7 +46,7 @@ The steps of the continuous integration & deployment pipeline are:
 * Functional testing of the application in the test environment (this could be automated further and enhanced with load-tests).
 * Deployment of the application in the production environment after successful outcome of the test run has been confirmed.
 
-### Function Testing of a Machine Learning Microservice inside the Continuous Integration / Continuous Deployment Pipeline
+### Functional Testing of a Machine Learning Microservice inside the Continuous Integration / Continuous Deployment Pipeline
 Any change to the application must be deployed & tested in the test-environment before being deployed in the production environment.
 This gives the organization the confidence, that the service can be provided to it's customers. In this project this is implemented by making a reference call to the machine learning microservice and comparing the outcome with an expected outcome.
 
@@ -135,71 +135,25 @@ Amazon Web Service's Command Line Interface is needed to access the infrastructu
 
 `$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"``
 
-Then, `$ unzip awscliv2.zip` and `$ sudo ./aws/install`. The installation can be tested with `$ aws --version`. Next, download and extract the latest release of _eksctl_, the command line tool that allows control of the Kubernetes cluster,  with the following command:
 
-`$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp`
-
-Move the extracted binary, `$ sudo mv /tmp/eksctl /usr/local/bin` and test that installation was successful by `$ eksctl version`. These guidelines have been taken from [this source](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html).
-
-**Note**: The GitTag version should be at least 0.20.0.
 
 ### Install Brew - A package management system
 Brew is package management system that is needed to deploy necessary tools on the machine. To install brew, enable execution of _install_brew.sh_,
 
-`$ chmod u+x install_brew.sh`
 
-and
-
-`$ make setup-brew`
-
-After the installation is finished, configure Homebrew in your /home/ubuntu/.profile by running
-
-`$ echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> /home/ubuntu/.profile`
-
-and add Homebrew to your PATH,
-
-`$ eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)`
-
-**Note:** This step requires the attention of the administrator, i.e. user input during execution is requested.
 
 ### Install Docker
-To install Docker, enable execution of _install_docker.sh_,
-
-`$ chmod u+x install_docker.sh`
-
-and
-
-`$ make setup-docker`
-
-**Note:** This step requires the attention of the administrator, i.e. user input during execution is requested.
-
-### Install GCC, hadolint & tidy
-It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipeline requires to check Docker-Files and .html-files prior to their deployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, _linters_ for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
-
-`$ make install`
-
-Two linters are deployed on the machine: The linter for Docker-files is _hadolint_ & The linter for html-files is _tidy_.
-
-**Note:** This step requires the attention of the administrator, i.e. user input during execution may be requested because packages might be out-of-date. Successfull execution of this procedure exits with `Toolchain is installed.`.
-
-**Note:** It is recommended to run `make test` to check if installation has been successfull. If this command does not exit with `Toolchain is ready.`, errors must be fixed before the next step.
-
-### Run the Docker-Image on the Host
-This file must be given permission to run (run `$ chmod u+x run_docker_image_on_local_host.sh` first). The docker image is build by
-
-`$ chmod u+x build_docker_image.sh` (to allow execution) followed by `$ ./build_docker_image.sh`
-
-After the image has been build, all images available on the host are listed.
-Note, that the recently created image appears in the list.
-The image can be run by
-
-`$ ./run_docker_image_on_local_host.sh`
-
-Then, the web server is running as a containerized application and publishes the static website on port 8000 of the host as displayed in the merged screenshots below.
-
-![local_container_run](doc/local_container_run.png)
+To install Docker, enable
 
 **Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
+
+### Install GCC, hadolint & pylint
+It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipeline requires to check Docker-Files and .html-files prior to their deployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, _linters_ for Dockerfiles and .html-files must be installed on the web server. These tasks are wrapped up by
+
+
+
+
+
 
 ### Configure Credentials of Amazon Web Service's Command Line Interface & Upload the Image to the Container Repository
 One goal of the pipeline is to keep track of healthy container images. Therefor, linted & tested images are kept in a container repository provided by Amazon Web Services, the Elastic Container Registry, that has been spawned as part of the infrastructure.
@@ -221,39 +175,6 @@ Jenkins will be available on port 8080 of the web server. The URL can be found i
 
 ![get_jenkins_url_from_webserver.png](doc/get_jenkins_url_from_webserver.png)
 
-To install Jenkins follow these steps:
-#### Step 1: Update existing packages
-Run
-
-`$ sudo apt-get update`
-
-on the host to complete this step.
-
-#### Step 2:  Install Java
-Run
-
-`$ sudo apt install -y default-jdk`
-
-on the host to complete this step.
-
-#### Step 3: Download Jenkins package.
-You can go to http://pkg.jenkins.io/debian/ to see the available commands. First, add a key to your system by
-
-`$ wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -``
-
-#### Step 4: Add the following entry in your /etc/apt/sources.list:
-Run
-
-`$ sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list' `
-
-on the host to complete this step.
-
-#### Step 5a): Update your local package index
-Run
-
-`$ sudo apt-get update`
-
-on the host to complete this step.
 
 #### Step 5b): _Sometimes_ packages are not (yet) valid and keys must be added manually
 This can be resolved shown in the figure below
@@ -264,32 +185,7 @@ Run this command and replace the missing keys:
 
 `$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <ENTER MISSING KEY HERE>`
 
-#### Step 6: Install Jenkins
-Run
 
-`$ sudo apt-get install -y jenkins`
-
-on the host to complete this step.
-
-#### Step 7: Start the Jenkins server
-Run
-
-`$ sudo systemctl start jenkins`
-
-on the host to complete this step.
-
-#### Step 8: Enable the service to load during boot & add Jenkins to users
-Run
-
-`$ sudo systemctl enable jenkins`
-
-and
-
-`$ sudo systemctl status jenkins`
-
-on the host to complete this step. This should lead to the outputs displayed below.
-
-![start_jenkins_on_host](doc/start_jenkins_on_host.png)
 
 Make sure, that Jenkins is able to access docker by
 
@@ -309,34 +205,64 @@ One the host, run
 
  An "Open Blue Ocean" link should show up in the sidebar. Click it, and it will take you to the "Blue Ocean" screen, where projects will be managed.
 
-## Section V: Configure the Continuous Integration & Deployment Pipeline
+## Section V: The Continuous Integration / Continuous Deployment Pipeline
+This section describes the individual steps of the continuous integration / continuous deployment pipeline for machine learning microservice. Jenkins operates from the root directory of this repository and is controlled by the `Jenkinsfile`. A large part of the commands of the `Jenkinsfile` are swapped out to the `Makefile` because it might be necessary to run these manually from the server during maintenance of the pipeline.
 
-### Set up Amazon Web Service Credentials in Jenkins
-Credentials for Amazon Web Service need to be created so that they can be used in the pipeline.
-On main Jenkins page, select the “Credentials” link from the sidebar. Click on "(global)" from the list, and then "Add credentials" from the sidebar. Choose "AWS Credentials" from the dropdown and
+### Step 1: _Install requirements_
+Jenkins installs requirements defined in `requirements.txt`. They are given by developers of the microservice. When these requirements change, Jenkins installs the new dependencies on it's host. A successful completion of this stage looks like displayed in the figure below.
 
-* add an ID and a description like "AWS Credentials for Udacity Capstone Project"
-* fill in the AWS Key and Secret Access Key generated when the IAM role was created.
+![pipeline_step_1_success](doc/pipeline_step_1_success.png)
 
-Click OK, and the credentials will now be available for the rest of the system.
+### Step 2: _Lint artifacts_
 
-### Generate Token and Add Repository
-A token is needed for Jenkins to access the _GitHub_ repository. Generate a token in GitHub. Then, in Jenkins select _BlueOcean_, set up a project, select _GitHub_ as source and enter the token. The pipeline will now show up with a run. The _classic Jenkins View_  will look like displayed in the figure below
+A successful completion of this stage looks like displayed in the figure below.
 
-![classic_jenkins_view](doc/classic_jenkins_view.png)
+![pipeline_step_2_success](doc/pipeline_step_2_success.png)
+
+### Step 3: _Build the image_
+Jenkins builds the docker image locally. In the command line, this can be observed as shown in the figure below.
+
+![pipeline_step_3_commandlineoutput](doc/pipeline_step_3_commandlineoutput.png)
+
+**Note:** The image is stored on the host. Now and then the host must be cleaned in order to make sure there is enough free disc space for images. This can be done by running `$ docker rmi $(docker images -a -q) --force` on the host of Jenkins.
+
+A successful completion of this stage looks like displayed in the figure below.
+
+![pipeline_step_3_success](doc/pipeline_step_3_success.png)
 
 
-### Scan Repository Triggers
-In the _classic Jenkins View_ go the project, "Cloud-DevOps-Engineer-Capstone-Project" and then select _Configure_ on the left hand. select _Scan Repository Triggers_ and switch to 1 Minute.
-Now Jenkins will scan the GitHub repository each minute for changes; if there are changes, the pipeline will run.
+### Step 4: _Upload the image_
+Jenkins uploads the image to the DockerHub using my credentials.
+A successful completion of this stage looks like displayed in the figure below.
 
-## Section VI: Continuous Integration & Deployment Pipeline At Work
-This section describes the individual components of the continuous integration / continuous deployment pipeline that this repository contains.
+![pipeline_step_4_success](doc/pipeline_step_4_success.png)
 
-### Lint the Dockerfile
-The Dockerfile gives docker instructions how to build the image and what to do with it, e.g. run the image with port-forwarding. The Dockerfile is checked both syntactically and with respect to non-functional guidelines (e.g. _Dockerfile:2 DL3006 Always tag the version of an image explicitly_), such that one can be sure, the image builds correctly before kicking off the build. The tool used to perform these checks is hadolint, to run the checks
+### Step 5: _Deploy for testing_
+Jenkins deploys the microservice in it's target environment. Here it is supposed to be tested. The microservice is run by a [ReplicationController](https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/). This kind of controller ensures that a specified number of pod replicas are running at any one time. In other words, a ReplicationController makes sure that a pod or a homogeneous set of pods is always up and available. A successful completion of this stage looks like displayed in the figure below.
 
-`$ hadolint Dockerfile`
+![pipeline_step_5_success](doc/pipeline_step_5_success.png)
+
+The ReplicationController is connected to the outside world by a [LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/). On cloud providers which support external load balancers, such as Amazon Web Services, this Kubernetes Service makes sure, the application can be catched at the URL of the LoadBalancer. The URL can be seen in the figure below, which is a command line output of step five of the pipline.
+
+![pipeline_step_5_commandlineoutput](doc/pipeline_step_5_commandlineoutput.png)
+
+### Step 6: _Run functional tests in target environment_
+Jenknis runs a test script in this section, `test_prediction.sh`. This script makes a reference call to the deployed microservice and hence
+
+* verifies, that the microservice is deployed correctly and can be accessed over the internet (proof, that "we are doing things right")
+* validates, that the microservice is producing the expected result (proof, thet "we are doing the right things"). This can be regarded as a regression test.
+
+A successful completion of this stage looks like displayed in the figure below.
+
+![pipeline_step_6_success](doc/pipeline_step_6_success.png)
+
+### Step 7: _Deploy in production_
+Once verification & validation in the test environment is complete (approved by a user input), it is time to deploy the microservice in it's production environment. This step is the same as step five, but yields the URL of the LoadBalancer of the production environment, which must be communicated to the customers of the microservice.
+A successful completion of this stage looks like displayed in the figure below.
+
+![pipeline_step_7_success](doc/pipeline_step_7_success.png)
+
+Since the test environment and the production environment are equal, there is no configuration drift and the organization can deploy to production immediatley after successful testing in the test environment.
 
 
 
