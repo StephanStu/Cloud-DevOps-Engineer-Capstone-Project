@@ -20,12 +20,6 @@ pipeline {
 						 		 sh 'make build'
 						 }
 				 }
-				 stage('Run functional tests on the host') {
-				 		 steps{
-						 		 sh 'echo "Include some regression tests on the host here."'
-								 sh 'echo "Assume that tests have passed..."'
-						 }
-				 }
 				 stage('Upload the image') {
 				 		 steps{
 						 		 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
