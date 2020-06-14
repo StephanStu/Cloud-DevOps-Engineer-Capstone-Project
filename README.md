@@ -20,6 +20,10 @@ Two environments must be created, which must be equal: One environment serves fo
 ## Section II: Results & Guideline to Build this Project
 This section wraps up the achievements of this project.
 ### Setup of a Jenkins Server and Integration of Jenkins with DockerHub and Amazon Web Service's Kubernetes Solution
+A server has been setup in Amazon Web Service, which operates the continuous integration & deployment pipeline. The server can be initialized quickly again, because every part of the infrastructure is defined in code in the folder `/infrastructure` , e.g. the CloudFormation files (`/infrastructure/infrastructure.yml`, `/infrastructure/parameters.json`) and the `/infrastructure/Makefile`.
+
+![server-url.png](doc/server-url.png)  
+
 
 ### Setup of a Continuous Integration / Continuous Deployment Pipeline
 
