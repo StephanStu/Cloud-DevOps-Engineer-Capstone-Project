@@ -131,7 +131,7 @@ The _Makefile_ can be found in the root of this repository; the repository must 
 Then, cd into the created folder to and `$ ls` will display the _Makefile_.
 
 ### Install Amazon Web Service's Command Line Interface & Kubernetes Cluster Control
-Amazon Web Service's Command Line Interface is needed to access the infrastructure from the web server in an automatic fashion, e.g. to upload container images to the container repository provided by Amazon Web Service. To install Amazon Web Service's Command Line Interface, cd into `infrastructure` and
+Amazon Web Service's Command Line Interface is needed to access the infrastructure from the web server in an automatic fashion, e.g. to update the Kubernetes Cluster provided by Amazon Web Service with the latest container images. To install Amazon Web Service's Command Line Interface, cd into `infrastructure` and
 
 `$ make aws-command-line-tools`
 
@@ -141,7 +141,7 @@ Brew is package management system that is needed to deploy necessary tools on th
 `$ make tools`
 
 ### Install GCC, Docker, PyLint, Hadolint, pip
-It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipeline requires to check Docker-Files and .html-files prior to their deployment. Checking the files for semantic errors and non-functional requirements is also called _linting_. Consequently, these _linters_ for Dockerfiles and python-files must be installed on the web server: _PyLint_, _Hadolint_ .
+It is recommended by _Brew_, that GCC is installed on the server. Moreover, the pipeline requires to check Docker-Files and python-files prior to their deployment. Checking the files for semantic errors and non-functional requirements is also called _linting_ or static code analysis. Consequently, these _linters_ for Dockerfiles and python-files must be installed on the web server: _PyLint_, _Hadolint_ .
 _Docker_, and _pip_ are needed to operate the continuous integration & deployment pipeline as well. A successful execution of `$ make tools` will install these tools on the host.
 
 **Note:** If you see `Got permission denied while trying to connect to the Docker daemon socket at unix:///...`, search for help [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
@@ -181,15 +181,20 @@ Jenkins needs credentials to access Amazon Web Service and the DockerHub. These 
 
 The credentials of Amazon Web Service are added as pre-defined in Jenkins.
 
-To add credentials for DockerHub, [this](https://www.jenkins.io/doc/pipeline/steps/credentials-binding/) solution is used: The Credentials Binding Plugin. This is reflected in the Jenkinsfile inside stage _Upload the image_,
+To add credentials for DockerHub, [this](https://www.jenkins.io/doc/pipeline/steps/credentials-binding/) solution is used: The Credentials Binding Plugin. This is reflected in the `Jenkinsfile` inside stage _Upload the image_,
 
 `steps{
-    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+
+    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')])
+    {
       sh '''
+
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         docker push stephanstu/predictor
+
       '''
     }
+
 }`
 
 The variables `$DOCKER_USERNAME` and `$DOCKER_PASSWORD` are configured in Jenkins and not visible to the outside world.
@@ -268,7 +273,7 @@ Docker-Containers can be considered as single-purpose virtual machines that can 
 * To stop a container running: `$ docker container stop [ID-of-container]`
 
 ### DockerHub: A Container Repository: _upload docker to dockerhub.sh_
-For those, who do not work inside Amazon Webs Service and use the local container repository, ECR, there is an alternative to managing Docker-Images - the [DockerHub](https://hub.docker.com/). To upload an image, you have to register in DockerHub.
+For those, who do work inside Amazon Webs Service but do not use the local container repository, _ECR_, there is an alternative to managing Docker-Images - the [DockerHub](https://hub.docker.com/). To upload an image, you have to register in DockerHub.
 After the image has been uploaded, it is visible in the DockerHub-Account as a new (or refreshed) repository.
 
 * Login from command line: `docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD`
