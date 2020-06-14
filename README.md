@@ -20,14 +20,39 @@ Two environments must be created, which must be equal: One environment serves fo
 ## Section II: Results & Guideline to Build this Project
 This section wraps up the achievements of this project.
 ### Setup of a Jenkins Server and Integration of Jenkins with DockerHub and Amazon Web Service's Kubernetes Solution
-A server has been setup in Amazon Web Service, which operates the continuous integration & deployment pipeline. The server can be initialized quickly again, because every part of the infrastructure is defined in code in the folder `/infrastructure` , e.g. the CloudFormation files (`/infrastructure/infrastructure.yml`, `/infrastructure/parameters.json`) and the `/infrastructure/Makefile`.
+A server has been setup in Amazon Web Service, which operates the continuous integration & deployment pipeline. The server can be initialized quickly again, because every part of the infrastructure is defined in code in the folder `/infrastructure` , e.g. the CloudFormation files (`/infrastructure/infrastructure.yml`, `/infrastructure/parameters.json`) and the `/infrastructure/Makefile`, that creates the Kubernetes Cluser and installs necessary tools to lint the artifacts of the microservice. In the figure below, the Jenkins-Screen-Homescreen is displayed together with AWS::EC2-Management console displaying the URL of the Jenkins-Server.  
 
 ![server-url.png](doc/server-url.png)  
 
+Jenkins has been configured with necessary credentials to
+
+* push docker images to DockerHub.
+* update the Kubernetes Cluster in AWS::EKS.
+
+**Note**: Jenkins is reached a port 8080 of the AWS::EC2-Instance.
 
 ### Setup of a Continuous Integration / Continuous Deployment Pipeline
+A continuous integration & deployment pipeline has been defined by the `Jenkinsfile` in the root of this repository. It implements the necessary requirements of this project.
+
+![server-url.png](pipeline_overview.png)
+
+The steps of the continuous integration & deployment pipeline are:
+
+* Installing requirements of the microservice `app.py`
+* Linting of the artifacts of the microservice `app.py`
+* Building of a docker container image
+* Pushing the image to DockerHub
+* Deployment of the application in a test environment
+* Functional testing of the application in the test environment (this could be automated further and enhacned with load-tests)
+* Deployment of the application in the production environment after successful outcome of the test run has been confirmed
 
 ### Function Testing of a Machine Learning Microservice inside the Continuous Integration / Continuous Deployment Pipeline
+Any change to the application must be deployed & tested in the test-environment before being deployed in the production environment.
+This gives the organization the confidence, that the service can be provided to it's customers. In this project this is implemented by making a reference call to the machine learning microservice and comparing the outcome with an expected outcome.
+
+![confirm_test_results.png](confirm_test_results.png)
+
+This could be subject to further automation and enhancement, e.g. followed by load-testing.
 
 ### Further Details of the Continuous Integration / Continuous Deployment Pipeline
 The following sections describe the details of the implementation of the deployment pattern,
